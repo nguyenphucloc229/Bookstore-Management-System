@@ -2,10 +2,13 @@
 #include <QMessageBox>
 #include "db/DatabaseManager.h"
 #include "ui/MainWindow.h"
+#include "ui/AppStyle.h"
+
 
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
+    AppStyle::apply(app);
     app.setApplicationName("Bookstore Management System");
 
 

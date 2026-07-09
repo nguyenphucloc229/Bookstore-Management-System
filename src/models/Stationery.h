@@ -1,7 +1,7 @@
 #pragma once
 #include "Product.h"
 
-
+// Văn phòng phẩm — lớp con của Product (Inheritance)
 class Stationery : public Product {
 public:
     Stationery(int id, const QString& name, double price, int stockQty,
@@ -18,5 +18,5 @@ public:
 
 private:
     QString m_brand;
-    QString m_category;
+    QString m_category;   // ví dụ: "Bút", "Vở", "Dụng cụ học tập"
 };

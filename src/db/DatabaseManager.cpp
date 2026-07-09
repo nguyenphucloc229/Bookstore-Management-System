@@ -5,7 +5,6 @@
 
 DatabaseManager& DatabaseManager::instance()
 {
-
     static DatabaseManager s_instance;
     return s_instance;
 }
@@ -40,7 +39,6 @@ bool DatabaseManager::createSchema()
 {
     QSqlQuery q(m_db);
     const QStringList ddl = {
-
         R"(CREATE TABLE IF NOT EXISTS products (
             id           INTEGER PRIMARY KEY AUTOINCREMENT,
             type         TEXT    NOT NULL,
@@ -87,7 +85,5 @@ bool DatabaseManager::createSchema()
 
 bool DatabaseManager::seedIfEmpty()
 {
-
-
     return true;
 }

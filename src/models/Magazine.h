@@ -1,7 +1,7 @@
 #pragma once
 #include "Product.h"
 
-
+// Tạp chí — lớp con của Product (Inheritance)
 class Magazine : public Product {
 public:
     Magazine(int id, const QString& name, double price, int stockQty,
@@ -18,5 +18,5 @@ public:
 
 private:
     int m_issueNumber;
-    QString m_publishDate;
+    QString m_publishDate;   // định dạng "yyyy-MM-dd"
 };

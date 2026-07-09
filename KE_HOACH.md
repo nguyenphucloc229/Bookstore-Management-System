@@ -45,6 +45,16 @@
 - Xuất hiện trong video, thuyết trình phần mình làm
 - Chuẩn bị vấn đáp: giải thích được code + pattern + UML module của mình
 
+## TIMELINE HOÀN THÀNH PROJECT
+
+- 10/07: Mọi người phải clone và build được skeleton.
+- 20/07: Xong phần repository/data của module mình.
+- 27/07: Xong UI chính của module mình.
+- 31/07: App phải chạy được flow demo đầy đủ.
+- 01/08: Code freeze, không thêm tính năng mới.
+- 04–05/08: Hoàn thiện report + slide.
+- 06/08: Quay video.
+- 07/08: Đóng gói và nộp.
 
 ## PHẦN 1 — CÁCH DÙNG GIT/GITHUB 
 
@@ -61,8 +71,8 @@ git config --global user.name "Nguyen Van A"
 git config --global user.email "email-cua-ban@gmail.com"
 
 # Clone repo về máy
-git clone https://github.com/<tai-khoan-loc>/BookstoreManagement.git
-cd BookstoreManagement
+git clone https://github.com/nguyenphucloc229/Bookstore-Management-System.git
+cd Bookstore-Management-System
 ```
 
 ### 1.2. Quy trình làm việc hàng ngày
@@ -120,6 +130,7 @@ git push
 ### 1.5. Luật chung
 
 | Luật | Lý do |
+|---|---|
 | Không push thẳng lên `main` — chỉ Lộc merge PR | main phải luôn build được |
 | Commit ít nhất 2–3 lần/tuần | Bằng chứng đóng góp đều đặn |
 | Commit bằng tên thật, đúng email GitHub | Giảng viên chấm theo commit history |
@@ -131,6 +142,7 @@ git push
 ## PHẦN 2 — TECH STACK
 
 | Hạng mục | Lựa chọn | 
+|---|---|
 | Ngôn ngữ | C++ |
 | GUI | **Qt 6 (Qt Widgets)** | 
 | Build | CMake |

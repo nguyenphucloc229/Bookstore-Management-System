@@ -1,7 +1,7 @@
 #pragma once
 #include "Product.h"
 
-
+// Sách — lớp con của Product (Inheritance)
 class Book : public Product {
 public:
     Book(int id, const QString& name, double price, int stockQty,

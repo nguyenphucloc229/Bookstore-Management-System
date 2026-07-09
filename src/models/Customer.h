@@ -1,10 +1,10 @@
 #pragma once
 #include <QString>
 
-
-
-
-
+/*
+ * Customer — khách hàng của cửa hàng.
+ * Class đơn giản (không kế thừa), đủ cho scope tối thiểu: lưu thông tin liên hệ.
+ */
 class Customer {
 public:
     Customer(int id, const QString& name, const QString& phone, const QString& email);

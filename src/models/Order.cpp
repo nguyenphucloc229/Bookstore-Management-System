@@ -7,7 +7,7 @@ Order::Order(int id, int customerId, const QDateTime& createdAt)
 
 void Order::addItem(const OrderItem& item)
 {
-
+    // Nếu sản phẩm đã có trong đơn thì cộng dồn số lượng
     for (auto& it : m_items) {
         if (it.productId == item.productId) {
             it.quantity += item.quantity;
