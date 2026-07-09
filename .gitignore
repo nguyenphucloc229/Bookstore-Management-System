@@ -1,0 +1,16 @@
+build/
+build-*/
+cmake-build-*/
+
+*.user
+*.user.*
+*.autosave
+
+*.db
+*.sqlite
+
+.vscode/
+.idea/
+
+Thumbs.db
+.DS_Store
