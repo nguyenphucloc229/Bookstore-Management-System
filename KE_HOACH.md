@@ -56,6 +56,21 @@
 - 06/08: Quay video.
 - 07/08: Đóng gói và nộp.
 
+## QUY ƯỚC GIAO DIỆN & TÍCH HỢP
+
+- Toàn bộ giao diện dùng chung style trong `src/ui/AppStyle.h` và `src/ui/AppStyle.cpp`.
+- Không tự chọn màu/font riêng trong từng module.
+- Không setStyleSheet riêng lung tung trong từng page.
+- MainWindow và style chung do Lộc quản lý.
+- Mỗi page dùng layout chung: tiêu đề, thanh tìm kiếm/bộ lọc/nút thêm, bảng dữ liệu, dialog thêm/sửa.
+- Nút dùng tên thống nhất: Add, Edit, Delete, Search, Save, Cancel.
+- Không tự ý đổi tên class, tên hàm public, tên file hoặc database schema nếu chưa báo nhóm.
+- UI chỉ gọi Service hoặc Repository, không viết SQL trực tiếp trong UI.
+- Repository phụ trách đọc/ghi database.
+- Service phụ trách business logic.
+- Mỗi PR phải build được trước khi gửi review.
+- Trước khi code mỗi ngày phải pull main mới nhất.
+
 ## PHẦN 1 — CÁCH DÙNG GIT/GITHUB 
 
 Điểm cá nhân được chấm dựa trên **commit history** — commit của bạn chính là bằng chứng đóng góp. Không commit = không có bằng chứng = mất điểm.
