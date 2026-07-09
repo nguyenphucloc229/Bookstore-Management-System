@@ -170,7 +170,7 @@ git push
 
 ```
 src/
-├── models/        Class OOP thuần: Product, Book, Person, Order...
+├── models/        Class OOP thuần: Product, Book, Customer, Order...
 ├── factories/     ProductFactory              [Pattern: Factory]
 ├── db/            DatabaseManager             [Pattern: Singleton]
 ├── repositories/  Đọc/ghi SQLite — UI không viết SQL trực tiếp
