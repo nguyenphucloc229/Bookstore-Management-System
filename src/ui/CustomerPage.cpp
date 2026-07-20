@@ -10,15 +10,46 @@ CustomerPage::CustomerPage(QWidget* parent)
 
 void CustomerPage::setupUi()
 {
-    // TODO(Member 3): thay placeholder bằng UI thật (xem mô tả trong CustomerPage.h)
-    auto* layout = new QVBoxLayout(this);
-    auto* placeholder = new QLabel(
-        "TODO — Member 3: Module Quản lý Khách hàng", this);
-    placeholder->setAlignment(Qt::AlignCenter);
-    layout->addWidget(placeholder);
+    auto *layout = new QVBoxLayout(this);
+
+    table = new QTableWidget(this);
+
+    table->setColumnCount(4);
+    table->setHorizontalHeaderLabels({
+        "ID",
+        "Name",
+        "Phone",
+        "Email"
+    });
+
+    layout->addWidget(table);
+
+    reloadTable();
 }
+
+#include "repositories/CustomerRepository.h"
 
 void CustomerPage::reloadTable()
 {
-    // TODO(Member 3)
+    CustomerRepository repo;
+    auto customers = repo.getAll();
+
+    table->setRowCount(customers.size());
+
+    for (int i = 0; i < customers.size(); ++i)
+    {
+        table->setItem(i, 0,
+                       new QTableWidgetItem(QString::number(customers[i]->id())));
+
+        table->setItem(i, 1,
+                       new QTableWidgetItem(customers[i]->name()));
+
+        table->setItem(i, 2,
+                       new QTableWidgetItem(customers[i]->phone()));
+
+        table->setItem(i, 3,
+                       new QTableWidgetItem(customers[i]->email()));
+    }
+
+    table->resizeColumnsToContents();
 }
