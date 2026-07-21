@@ -1,16 +1,11 @@
 #pragma once
 #include <QWidget>
+#include <QTableWidget>
+#include "../repositories/ProductRepository.h"
 
 /*
- * ProductPage — màn hình Quản lý sản phẩm.
- * NGƯỜI PHỤ TRÁCH: Member 2
- *
- * Yêu cầu UI:
- *  - QTableWidget/QTableView hiển thị danh sách (cột: ID, Loại, Tên, Giá, Tồn kho).
- *  - Ô tìm kiếm (QLineEdit) + combo lọc theo loại (Tất cả/Sách/Tạp chí/VPP).
- *  - Nút Thêm / Sửa / Xoá -> mở dialog form (form đổi field theo loại sản phẩm).
- *  - Validate: tên không rỗng, giá > 0, tồn kho >= 0 -> sai thì QMessageBox báo lỗi.
- *  - Dòng nào sắp hết hàng (isLowStock) -> tô màu đỏ/vàng cảnh báo.
+ * ProductPage – màn hình Quản lý sản phẩm.
+ * NGƯỜI PHỤ TRÁCH: Member 2 (Vũ Bình Nguyên)
  */
 class ProductPage : public QWidget {
     Q_OBJECT
@@ -20,5 +15,8 @@ public:
 
 private:
     void setupUi();
-    void reloadTable();   // đọc từ ProductRepository và đổ vào bảng
+    void reloadTable(); // đọc từ ProductRepository và đổ vào bảng
+
+    QTableWidget* m_tableWidget = nullptr;
+    ProductRepository m_repository;
 };
