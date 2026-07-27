@@ -1,12 +1,19 @@
+#include "models/Order.h"
+#include "services/SalesService.h"
+#include <QDateTime>
 #include "SalesService.h"
-#include "repositories/ProductRepository.h"
 #include "repositories/OrderRepository.h"
+
 #include <QTextStream>
 // TODO(Member 4 - Tân): implement theo quy trình mô tả trong SalesService.h
 SalesService::CheckoutResult SalesService::checkout(Order& order)
 {
     CheckoutResult result;
 
+    if (order.items().empty()) {
+        result.errorMessage = "Đơn hàng không có sản phẩm.";
+        return result;
+    }
     // Bước 1: Kiểm tra tồn kho từng item
     // TODO(Member 2): dùng ProductRepository::findById(...)
     // để kiểm tra stock_qty có đủ hay không.
@@ -15,7 +22,6 @@ SalesService::CheckoutResult SalesService::checkout(Order& order)
     // Order::total() đã tính tổng từ các OrderItem.
     const double total = order.total();
     (void)total;
-
     // Bước 3: Lưu Order + OrderItems
     OrderRepository orderRepo;
     const int orderId = orderRepo.save(order);

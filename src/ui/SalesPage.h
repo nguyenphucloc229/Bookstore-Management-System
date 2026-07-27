@@ -1,21 +1,16 @@
 #pragma once
+
 #include <QWidget>
 
-/*
- * SalesPage — màn hình Bán hàng (POS) — TRÁI TIM của đồ án.
- * NGƯỜI PHỤ TRÁCH: Member 4
- *
- * Layout gợi ý (2 cột):
- *  - Trái: tìm sản phẩm + bảng kết quả, double-click để thêm vào giỏ.
- *  - Phải: GIỎ HÀNG (bảng item + sửa số lượng + xoá),
- *          combo chọn khách hàng (hoặc "Khách vãng lai"),
- *          hiển thị subtotal / giảm giá / TỔNG,
- *          nút "Thanh toán" -> gọi SalesService::checkout()
- *          -> thành công thì hiện dialog HOÁ ĐƠN (buildReceipt).
- *
- * Validate: giỏ rỗng không cho thanh toán, số lượng vượt tồn kho -> báo lỗi.
- */
-class SalesPage : public QWidget {
+class QLineEdit;
+class QPushButton;
+class QTableWidget;
+class QComboBox;
+class QLabel;
+class QSpinBox;
+
+class SalesPage : public QWidget
+{
     Q_OBJECT
 
 public:
@@ -23,4 +18,24 @@ public:
 
 private:
     void setupUi();
+    void loadProducts();
+    void addSelectedProductToCart();
+    void removeSelectedCartItem();
+    void clearCart();
+    void updateTotal();
+    void checkoutOrder();
+    // Khu vực tìm kiếm sản phẩm
+    QLineEdit* searchEdit = nullptr;
+    QPushButton* searchButton = nullptr;
+    QTableWidget* productTable = nullptr;
+    QSpinBox* quantitySpinBox = nullptr;
+    QPushButton* addToCartButton = nullptr;
+
+    // Khu vực giỏ hàng
+    QTableWidget* cartTable = nullptr;
+    QComboBox* customerComboBox = nullptr;
+    QLabel* totalLabel = nullptr;
+    QPushButton* removeItemButton = nullptr;
+    QPushButton* clearCartButton = nullptr;
+    QPushButton* checkoutButton = nullptr;
 };
