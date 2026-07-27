@@ -1,11 +1,14 @@
 #pragma once
 #include <QWidget>
 #include <QTableWidget>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QPushButton>
 #include "../repositories/ProductRepository.h"
 
 /*
- * ProductPage – màn hình Quản lý sản phẩm.
- * NGƯỜI PHỤ TRÁCH: Member 2 (Vũ Bình Nguyên)
+ * ProductPage – Giao diện quản lý danh sách sản phẩm
+ * Phụ trách: Vũ Bình Nguyên
  */
 class ProductPage : public QWidget {
     Q_OBJECT
@@ -15,8 +18,18 @@ public:
 
 private:
     void setupUi();
-    void reloadTable(); // đọc từ ProductRepository và đổ vào bảng
+    void reloadTable();
 
-    QTableWidget* m_tableWidget = nullptr;
+    void onAddButtonClicked();
+    void onEditButtonClicked();
+    void onDeleteButtonClicked();
+
+    QTableWidget* m_tableWidget{nullptr};
+    QLineEdit* m_searchEdit{nullptr};
+    QComboBox* m_categoryCombo{nullptr};
+    QPushButton* m_addButton{nullptr};
+    QPushButton* m_editButton{nullptr};
+    QPushButton* m_deleteButton{nullptr};
+
     ProductRepository m_repository;
 };
