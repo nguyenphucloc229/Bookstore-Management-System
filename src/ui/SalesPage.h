@@ -19,6 +19,11 @@ public:
 private:
     void setupUi();
     void loadProducts();
+    void addSelectedProductToCart();
+    void removeSelectedCartItem();
+    void clearCart();
+    void updateTotal();
+    void checkoutOrder();
     // Khu vực tìm kiếm sản phẩm
     QLineEdit* searchEdit = nullptr;
     QPushButton* searchButton = nullptr;

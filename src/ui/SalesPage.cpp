@@ -1,19 +1,23 @@
 #include "SalesPage.h"
+
 #include "repositories/ProductRepository.h"
 #include "models/Book.h"
+#include "models/Order.h"
+#include "services/SalesService.h"
 
-#include <QTableWidgetItem>
 #include <QComboBox>
+#include <QDateTime>
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QLabel>
 #include <QLineEdit>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QSpinBox>
 #include <QTableWidget>
+#include <QTableWidgetItem>
 #include <QVBoxLayout>
-#include <QDebug>
 SalesPage::SalesPage(QWidget* parent)
     : QWidget(parent)
 {
@@ -176,7 +180,21 @@ void SalesPage::setupUi()
 
     connect(searchEdit, &QLineEdit::returnPressed,
             this, &SalesPage::loadProducts);
+    connect(addToCartButton, &QPushButton::clicked,
+            this, &SalesPage::addSelectedProductToCart);
 
+    connect(productTable, &QTableWidget::cellDoubleClicked,
+            this, [this](int, int) {
+                addSelectedProductToCart();
+            });
+
+    connect(removeItemButton, &QPushButton::clicked,
+            this, &SalesPage::removeSelectedCartItem);
+
+    connect(clearCartButton, &QPushButton::clicked,
+            this, &SalesPage::clearCart);
+    connect(checkoutButton, &QPushButton::clicked,
+            this, &SalesPage::checkoutOrder);
     // Hiển thị toàn bộ sản phẩm ngay khi mở trang
     loadProducts();
 }
@@ -244,4 +262,249 @@ void SalesPage::loadProducts()
             new QTableWidgetItem(author)
             );
     }
+}
+void SalesPage::addSelectedProductToCart()
+{
+    const int productRow = productTable->currentRow();
+
+    if (productRow < 0) {
+        QMessageBox::warning(
+            this,
+            "Chưa chọn sản phẩm",
+            "Vui lòng chọn một sản phẩm."
+            );
+        return;
+    }
+
+    const int productId =
+        productTable->item(productRow, 0)->text().toInt();
+
+    const QString productName =
+        productTable->item(productRow, 1)->text();
+
+    const double unitPrice =
+        productTable->item(productRow, 2)->text().toDouble();
+
+    const int stockQty =
+        productTable->item(productRow, 3)->text().toInt();
+
+    const int quantity = quantitySpinBox->value();
+
+    if (stockQty <= 0) {
+        QMessageBox::warning(
+            this,
+            "Hết hàng",
+            "Sản phẩm này hiện đã hết hàng."
+            );
+        return;
+    }
+
+    if (quantity > stockQty) {
+        QMessageBox::warning(
+            this,
+            "Không đủ tồn kho",
+            QString("Chỉ còn %1 sản phẩm trong kho.").arg(stockQty)
+            );
+        return;
+    }
+
+    // Nếu sản phẩm đã có trong giỏ thì cộng số lượng
+    for (int row = 0; row < cartTable->rowCount(); ++row) {
+        const int cartProductId =
+            cartTable->item(row, 0)->text().toInt();
+
+        if (cartProductId == productId) {
+            const int oldQuantity =
+                cartTable->item(row, 3)->text().toInt();
+
+            const int newQuantity = oldQuantity + quantity;
+
+            if (newQuantity > stockQty) {
+                QMessageBox::warning(
+                    this,
+                    "Không đủ tồn kho",
+                    QString("Tổng số lượng không được vượt quá %1.")
+                        .arg(stockQty)
+                    );
+                return;
+            }
+
+            cartTable->item(row, 3)->setText(
+                QString::number(newQuantity)
+                );
+
+            cartTable->item(row, 4)->setText(
+                QString::number(unitPrice * newQuantity, 'f', 2)
+                );
+
+            updateTotal();
+            return;
+        }
+    }
+
+    // Sản phẩm chưa có trong giỏ: thêm dòng mới
+    const int cartRow = cartTable->rowCount();
+    cartTable->insertRow(cartRow);
+
+    cartTable->setItem(
+        cartRow,
+        0,
+        new QTableWidgetItem(QString::number(productId))
+        );
+
+    cartTable->setItem(
+        cartRow,
+        1,
+        new QTableWidgetItem(productName)
+        );
+
+    cartTable->setItem(
+        cartRow,
+        2,
+        new QTableWidgetItem(QString::number(unitPrice, 'f', 2))
+        );
+
+    cartTable->setItem(
+        cartRow,
+        3,
+        new QTableWidgetItem(QString::number(quantity))
+        );
+
+    cartTable->setItem(
+        cartRow,
+        4,
+        new QTableWidgetItem(
+            QString::number(unitPrice * quantity, 'f', 2)
+            )
+        );
+
+    updateTotal();
+}
+void SalesPage::updateTotal()
+{
+    double total = 0.0;
+
+    for (int row = 0; row < cartTable->rowCount(); ++row) {
+        QTableWidgetItem* totalItem = cartTable->item(row, 4);
+
+        if (totalItem) {
+            total += totalItem->text().toDouble();
+        }
+    }
+
+    totalLabel->setText(
+        QString("TỔNG TIỀN: %1")
+            .arg(QString::number(total, 'f', 2))
+        );
+}
+void SalesPage::removeSelectedCartItem()
+{
+    const int row = cartTable->currentRow();
+
+    if (row < 0) {
+        QMessageBox::warning(
+            this,
+            "Chưa chọn sản phẩm",
+            "Vui lòng chọn sản phẩm cần xóa khỏi giỏ."
+            );
+        return;
+    }
+
+    cartTable->removeRow(row);
+    updateTotal();
+}
+void SalesPage::clearCart()
+{
+    if (cartTable->rowCount() == 0) {
+        return;
+    }
+
+    const auto answer = QMessageBox::question(
+        this,
+        "Xóa giỏ hàng",
+        "Bạn có chắc muốn xóa toàn bộ giỏ hàng không?"
+        );
+
+    if (answer == QMessageBox::Yes) {
+        cartTable->setRowCount(0);
+        updateTotal();
+    }
+}
+void SalesPage::checkoutOrder()
+{
+    if (cartTable->rowCount() == 0) {
+        QMessageBox::warning(
+            this,
+            "Giỏ hàng trống",
+            "Vui lòng thêm ít nhất một sản phẩm trước khi thanh toán."
+            );
+        return;
+    }
+
+    const int customerId = customerComboBox->currentData().toInt();
+
+    Order order(
+        0,
+        customerId,
+        QDateTime::currentDateTime()
+        );
+
+    for (int row = 0; row < cartTable->rowCount(); ++row) {
+        QTableWidgetItem* idItem = cartTable->item(row, 0);
+        QTableWidgetItem* nameItem = cartTable->item(row, 1);
+        QTableWidgetItem* priceItem = cartTable->item(row, 2);
+        QTableWidgetItem* quantityItem = cartTable->item(row, 3);
+
+        if (!idItem || !nameItem || !priceItem || !quantityItem) {
+            QMessageBox::critical(
+                this,
+                "Dữ liệu không hợp lệ",
+                "Một sản phẩm trong giỏ hàng bị thiếu thông tin."
+                );
+            return;
+        }
+
+        OrderItem item;
+        item.productId = idItem->text().toInt();
+        item.productName = nameItem->text();
+        item.unitPrice = priceItem->text().toDouble();
+        item.quantity = quantityItem->text().toInt();
+
+        order.addItem(item);
+    }
+
+    SalesService salesService;
+    const SalesService::CheckoutResult result =
+        salesService.checkout(order);
+
+    if (!result.success) {
+        QMessageBox::critical(
+            this,
+            "Thanh toán thất bại",
+            result.errorMessage.isEmpty()
+                ? "Không thể hoàn tất đơn hàng."
+                : result.errorMessage
+            );
+        return;
+    }
+
+    // Gán ID vừa lưu để hóa đơn hiển thị đúng thông tin đơn
+    order.setId(result.orderId);
+
+    const QString receipt = salesService.buildReceipt(order);
+
+    QMessageBox receiptBox(this);
+    receiptBox.setWindowTitle("Hóa đơn");
+    receiptBox.setIcon(QMessageBox::Information);
+    receiptBox.setText("Thanh toán thành công.");
+    receiptBox.setDetailedText(receipt);
+    receiptBox.setStandardButtons(QMessageBox::Ok);
+    receiptBox.exec();
+
+    cartTable->setRowCount(0);
+    quantitySpinBox->setValue(1);
+    updateTotal();
+
+    // Tải lại để cập nhật tồn kho khi Member 2 hoàn thiện decrementStock()
+    loadProducts();
 }

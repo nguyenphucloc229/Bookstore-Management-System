@@ -1,5 +1,9 @@
+#include "models/Order.h"
+#include "services/SalesService.h"
+#include <QDateTime>
 #include "SalesService.h"
 #include "repositories/OrderRepository.h"
+
 #include <QTextStream>
 // TODO(Member 4 - Tân): implement theo quy trình mô tả trong SalesService.h
 SalesService::CheckoutResult SalesService::checkout(Order& order)
