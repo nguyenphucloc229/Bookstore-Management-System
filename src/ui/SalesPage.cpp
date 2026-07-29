@@ -1,6 +1,7 @@
 #include "SalesPage.h"
 
 #include "repositories/ProductRepository.h"
+#include "repositories/CustomerRepository.h"
 #include "models/Book.h"
 #include "models/Order.h"
 #include "services/SalesService.h"
@@ -109,6 +110,14 @@ void SalesPage::setupUi()
     customerComboBox = new QComboBox(cartGroup);
     customerComboBox->addItem("Khách vãng lai", 0);
 
+    // Nạp khách hàng thật vào combo (data của mỗi item = id khách)
+    CustomerRepository customerRepo;
+    for (const auto& customer : customerRepo.getAll()) {
+        if (customer) {
+            customerComboBox->addItem(customer->name(), customer->id());
+        }
+    }
+
     customerLayout->addWidget(customerLabel);
     customerLayout->addWidget(customerComboBox);
 
@@ -200,16 +209,12 @@ void SalesPage::setupUi()
 }
 void SalesPage::loadProducts()
 {
-    qDebug() << "loadProducts() called";
-
     const QString keyword = searchEdit->text().trimmed();
 
     ProductRepository productRepo;
     auto products = keyword.isEmpty()
                         ? productRepo.getAll()
                         : productRepo.search(keyword);
-
-    qDebug() << "Products found:" << products.size();
 
     productTable->setRowCount(0);
 

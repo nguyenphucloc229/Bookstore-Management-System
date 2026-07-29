@@ -1,11 +1,10 @@
-#include "models/Order.h"
-#include "services/SalesService.h"
-#include <QDateTime>
 #include "SalesService.h"
 #include "repositories/OrderRepository.h"
+#include "repositories/ProductRepository.h"
+#include "repositories/CustomerRepository.h"
 
 #include <QTextStream>
-// TODO(Member 4 - Tân): implement theo quy trình mô tả trong SalesService.h
+
 SalesService::CheckoutResult SalesService::checkout(Order& order)
 {
     CheckoutResult result;
@@ -14,26 +13,54 @@ SalesService::CheckoutResult SalesService::checkout(Order& order)
         result.errorMessage = "Đơn hàng không có sản phẩm.";
         return result;
     }
-    // Bước 1: Kiểm tra tồn kho từng item
-    // TODO(Member 2): dùng ProductRepository::findById(...)
-    // để kiểm tra stock_qty có đủ hay không.
 
-    // Bước 2: Tính tổng tiền
-    // Order::total() đã tính tổng từ các OrderItem.
-    const double total = order.total();
-    (void)total;
-    // Bước 3: Lưu Order + OrderItems
+    ProductRepository productRepo;
+
+    // Bước 1: Kiểm tra tồn kho từng item TRƯỚC khi bán
+    for (const OrderItem& item : order.items()) {
+        auto product = productRepo.findById(item.productId);
+        if (!product) {
+            result.errorMessage =
+                QString("Sản phẩm '%1' không còn tồn tại.").arg(item.productName);
+            return result;
+        }
+        if (product->stockQty() < item.quantity) {
+            result.errorMessage =
+                QString("Không đủ tồn kho cho '%1' (còn %2, cần %3).")
+                    .arg(item.productName)
+                    .arg(product->stockQty())
+                    .arg(item.quantity);
+            return result;
+        }
+    }
+
+    // Bước 2: Lưu Order + OrderItems (transaction trong OrderRepository)
     OrderRepository orderRepo;
     const int orderId = orderRepo.save(order);
-
     if (orderId < 0) {
         result.errorMessage = "Không thể lưu đơn hàng.";
         return result;
     }
+    order.setId(orderId);
 
-    // Bước 4: Trừ tồn kho
-    // TODO(Member 2): gọi ProductRepository::decrementStock(...)
-    // cho từng item sau khi repository hoàn thiện.
+    // Bước 3: Trừ tồn kho từng sản phẩm (đã kiểm tra đủ hàng ở Bước 1)
+    for (const OrderItem& item : order.items()) {
+        productRepo.decrementStock(item.productId, item.quantity);
+    }
+
+    // Bước 4: Cộng điểm cho khách thành viên (1 điểm / 10.000đ) + cập nhật hạng
+    if (order.customerId() != 0) {
+        CustomerRepository customerRepo;
+        auto customer = customerRepo.findById(order.customerId());
+        if (customer) {
+            const int earned = static_cast<int>(order.total() / 10000.0);
+            if (earned > 0) {
+                customer->setPoint(customer->point() + earned);
+                customer->updateRank();
+                customerRepo.update(*customer);
+            }
+        }
+    }
 
     result.success = true;
     result.orderId = orderId;

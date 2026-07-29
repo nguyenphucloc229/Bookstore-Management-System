@@ -3,7 +3,8 @@
 
 /*
  * Customer — khách hàng của cửa hàng.
- * Class đơn giản (không kế thừa), đủ cho scope tối thiểu: lưu thông tin liên hệ.
+ * Lưu thông tin liên hệ + hệ thống tích luỹ: điểm (point) và hạng thành viên
+ * (rank: Regular/Silver/Gold — tự tính từ point qua updateRank()).
  */
 class Customer
 {
