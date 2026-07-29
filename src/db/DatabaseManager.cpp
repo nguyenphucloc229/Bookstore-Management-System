@@ -53,7 +53,9 @@ bool DatabaseManager::createSchema()
             id     INTEGER PRIMARY KEY AUTOINCREMENT,
             name   TEXT NOT NULL,
             phone  TEXT,
-            email  TEXT
+            email  TEXT,
+            point  INTEGER NOT NULL DEFAULT 0,
+            rank   TEXT NOT NULL DEFAULT 'Regular'
         ))",
         R"(CREATE TABLE IF NOT EXISTS orders (
             id          INTEGER PRIMARY KEY AUTOINCREMENT,

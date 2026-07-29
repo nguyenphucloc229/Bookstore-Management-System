@@ -1,5 +1,10 @@
 #pragma once
 #include <QTableWidget>
+#include <QWidget>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QTableWidget>
+#include <QObject>
 
 /*
  * CustomerPage — màn hình Quản lý khách hàng.
@@ -10,16 +15,33 @@
  *  - Tìm kiếm theo tên hoặc SĐT.
  *  - Thêm / Sửa / Xoá với dialog form + validate (tên không rỗng, SĐT đúng dạng số).
  */
-class CustomerPage : public QWidget
+ class CustomerPage : public QWidget
 {
     Q_OBJECT
 
 public:
     explicit CustomerPage(QWidget *parent = nullptr);
 
-private:
-    void setupUi();
+private slots:
     void reloadTable();
 
+    void onSearchClicked();
+    void onAddClicked();
+    void onEditClicked();
+    void onDeleteClicked();
+
+private:
+    void setupUi();
+
+    // Search
+    QLineEdit *searchEdit;
+    QPushButton *searchButton;
+
+    // Customer table
     QTableWidget *table;
+
+    // Buttons
+    QPushButton *addButton;
+    QPushButton *editButton;
+    QPushButton *deleteButton;
 };
