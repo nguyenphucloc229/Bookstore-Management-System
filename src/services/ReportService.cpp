@@ -10,7 +10,7 @@ QVector<ReportService::RevenuePoint> ReportService::revenueByDay(const QDate& fr
 {
     QVector<RevenuePoint> result;
 
-    QSqlQuery query(DatabaseManager::instance().database());
+    QSqlQuery query(DatabaseManager::instance().db());
 
     query.prepare(
         "SELECT DATE(created_at),"
@@ -52,7 +52,7 @@ QVector<ReportService::TopProduct> ReportService::topSellingProducts(int limit)
 {
     QVector<TopProduct> result;
 
-    QSqlQuery query(DatabaseManager::instance().database());
+    QSqlQuery query(DatabaseManager::instance().db());
 
     query.prepare(
         "SELECT product_id,"
@@ -87,7 +87,7 @@ QVector<ReportService::TopProduct> ReportService::topSellingProducts(int limit)
 
     double ReportService::totalRevenueToday()
 {
-    QSqlQuery query(DatabaseManager::instance().database());
+    QSqlQuery query(DatabaseManager::instance().db());
 
     query.exec("SELECT IFNULL(SUM(total),0) FROM orders");
 
