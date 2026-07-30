@@ -107,7 +107,7 @@ std::unique_ptr<Customer> CustomerRepository::findById(int id)
 
     if (!query.next())
     {
-        qDebug() << "Không tìm thấy khách hàng có ID:" << id;
+        qDebug() << "Customer not found with ID:" << id;
         return nullptr;
     }
 

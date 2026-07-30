@@ -9,6 +9,6 @@ Stationery::Stationery(int id, const QString& name, double price, int stockQty,
 
 QString Stationery::getDetails() const
 {
-    return QString("[VPP] %1 — %2 | Loại: %3")
+    return QString("[Stationery] %1 — %2 | Category: %3")
         .arg(name(), m_brand, m_category);
 }

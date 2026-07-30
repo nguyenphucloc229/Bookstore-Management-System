@@ -22,7 +22,7 @@ int OrderRepository::save(const Order& order)
     }
 
     if (!db.transaction()) {
-        qWarning() << "Khong the bat đau transaction:"
+        qWarning() << "Unable to begin transaction:"
                    << db.lastError().text();
         return -1;
     }
@@ -47,7 +47,7 @@ int OrderRepository::save(const Order& order)
     orderQuery.bindValue(":total", order.total());
 
     if (!orderQuery.exec()) {
-        qWarning() << "Khong the luu don hang:"
+        qWarning() << "Unable to save order:"
                    << orderQuery.lastError().text();
         db.rollback();
         return -1;
@@ -69,7 +69,7 @@ int OrderRepository::save(const Order& order)
         itemQuery.bindValue(":quantity", item.quantity);
 
         if (!itemQuery.exec()) {
-            qWarning() << "Khong the luu chi tiet don hang:"
+            qWarning() << "Unable to save order details:"
                        << itemQuery.lastError().text();
             db.rollback();
             return -1;
@@ -77,7 +77,7 @@ int OrderRepository::save(const Order& order)
     }
 
     if (!db.commit()) {
-        qWarning() << "Khong the commit don hang:"
+        qWarning() << "Unable to commit order:"
                    << db.lastError().text();
         db.rollback();
         return -1;
@@ -94,7 +94,7 @@ OrderRepository::byDateRange(const QDateTime& from,
     auto& db = DatabaseManager::instance().db();
 
     if (!db.isOpen()) {
-        qWarning() << "Database chưa được mở";
+        qWarning() << "Database is not open";
         return orders;
     }
 
@@ -110,7 +110,7 @@ OrderRepository::byDateRange(const QDateTime& from,
     orderQuery.bindValue(":to", to.toString(Qt::ISODate));
 
     if (!orderQuery.exec()) {
-        qWarning() << "Khong the doc danh sach don hang:"
+        qWarning() << "Unable to read order list:"
                    << orderQuery.lastError().text();
         return orders;
     }
@@ -141,7 +141,7 @@ OrderRepository::byDateRange(const QDateTime& from,
         itemQuery.bindValue(":order_id", orderId);
 
         if (!itemQuery.exec()) {
-            qWarning() << "Khong the doc chi tiet don hang:"
+            qWarning() << "Unable to read order details:"
                        << itemQuery.lastError().text();
             return {};
         }

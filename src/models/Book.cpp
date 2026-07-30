@@ -10,6 +10,6 @@ Book::Book(int id, const QString& name, double price, int stockQty,
 
 QString Book::getDetails() const
 {
-    return QString("[Sách] %1 — %2 (%3) | ISBN: %4 | Thể loại: %5")
+    return QString("[Book] %1 — %2 (%3) | ISBN: %4 | Genre: %5")
         .arg(name(), m_author, m_publisher, m_isbn, m_genre);
 }

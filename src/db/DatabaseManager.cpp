@@ -23,7 +23,7 @@ bool DatabaseManager::open(const QString& path)
     m_db.setDatabaseName(path);
 
     if (!m_db.open()) {
-        qWarning() << "Không mở được database:" << m_db.lastError().text();
+        qWarning() << "Unable to open database:" << m_db.lastError().text();
         return false;
     }
     return createSchema() && seedIfEmpty();
@@ -78,7 +78,7 @@ bool DatabaseManager::createSchema()
 
     for (const QString& sql : ddl) {
         if (!q.exec(sql)) {
-            qWarning() << "Lỗi tạo bảng:" << q.lastError().text();
+            qWarning() << "Failed to create table:" << q.lastError().text();
             return false;
         }
     }

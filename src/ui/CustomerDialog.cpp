@@ -11,7 +11,7 @@
 CustomerDialog::CustomerDialog(QWidget *parent)
     : QDialog(parent)
 {
-    setWindowTitle("Thông tin khách hàng");
+    setWindowTitle("Customer Information");
     setMinimumWidth(350);
 
     nameEdit = new QLineEdit(this);
@@ -23,9 +23,9 @@ CustomerDialog::CustomerDialog(QWidget *parent)
     pointSpinBox->setValue(0);
 
     rankComboBox = new QComboBox(this);
-    rankComboBox->addItem("Thường", "Regular");
-    rankComboBox->addItem("Bạc", "Silver");
-    rankComboBox->addItem("Vàng", "Gold");
+    rankComboBox->addItem("Regular", "Regular");
+    rankComboBox->addItem("Silver", "Silver");
+    rankComboBox->addItem("Gold", "Gold");
 
     // Không cho sửa hạng trực tiếp nếu hạng được tính từ điểm.
     rankComboBox->setEnabled(false);
@@ -37,11 +37,11 @@ CustomerDialog::CustomerDialog(QWidget *parent)
 
     auto *layout = new QFormLayout(this);
 
-    layout->addRow("Tên:", nameEdit);
-    layout->addRow("SĐT:", phoneEdit);
+    layout->addRow("Name:", nameEdit);
+    layout->addRow("Phone:", phoneEdit);
     layout->addRow("Email:", emailEdit);
-    layout->addRow("Điểm:", pointSpinBox);
-    layout->addRow("Hạng:", rankComboBox);
+    layout->addRow("Points:", pointSpinBox);
+    layout->addRow("Tier:", rankComboBox);
     layout->addWidget(buttonBox);
 
     connect(pointSpinBox,
@@ -113,7 +113,7 @@ QString CustomerDialog::rank() const
 
 void CustomerDialog::setAddMode()
 {
-    setWindowTitle("Thêm khách hàng");
+    setWindowTitle("Add Customer");
 
     pointSpinBox->setValue(0);
     rankComboBox->setCurrentIndex(rankComboBox->findData("Regular"));
@@ -124,7 +124,7 @@ void CustomerDialog::setAddMode()
 
 void CustomerDialog::setEditMode()
 {
-    setWindowTitle("Sửa khách hàng");
+    setWindowTitle("Edit Customer");
 
     pointSpinBox->setEnabled(true);
     rankComboBox->setEnabled(true);
@@ -152,8 +152,8 @@ void CustomerDialog::validateAndAccept()
     {
         QMessageBox::warning(
             this,
-            "Dữ liệu không hợp lệ",
-            "Tên khách hàng không được để trống."
+            "Invalid Data",
+            "Customer name cannot be empty."
             );
 
         nameEdit->setFocus();
@@ -167,8 +167,8 @@ void CustomerDialog::validateAndAccept()
     {
         QMessageBox::warning(
             this,
-            "Dữ liệu không hợp lệ",
-            "Số điện thoại chỉ được chứa chữ số."
+            "Invalid Data",
+            "Phone number may contain digits only."
             );
 
         phoneEdit->setFocus();

@@ -9,12 +9,12 @@ int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
     AppStyle::apply(app);
-    app.setApplicationName("Hệ thống Quản lý Nhà sách");
+    app.setApplicationName("Bookstore Management System");
 
 
     if (!DatabaseManager::instance().open("bookstore.db")) {
-        QMessageBox::critical(nullptr, "Lỗi",
-                              "Không thể mở database. Ứng dụng sẽ thoát.");
+        QMessageBox::critical(nullptr, "Error",
+                              "Unable to open the database. The application will exit.");
         return 1;
     }
 

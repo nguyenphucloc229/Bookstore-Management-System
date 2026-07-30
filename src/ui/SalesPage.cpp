@@ -29,7 +29,7 @@ void SalesPage::setupUi()
 {
     auto* mainLayout = new QVBoxLayout(this);
 
-    auto* titleLabel = new QLabel("BÁN HÀNG (POS)", this);
+    auto* titleLabel = new QLabel("SALES (POS)", this);
     titleLabel->setAlignment(Qt::AlignCenter);
 
     QFont titleFont = titleLabel->font();
@@ -44,15 +44,15 @@ void SalesPage::setupUi()
     // =========================================================
     // BÊN TRÁI: TÌM KIẾM VÀ CHỌN SẢN PHẨM
     // =========================================================
-    auto* productGroup = new QGroupBox("Danh sách sản phẩm", this);
+    auto* productGroup = new QGroupBox("Product List", this);
     auto* productLayout = new QVBoxLayout(productGroup);
 
     auto* searchLayout = new QHBoxLayout();
 
     searchEdit = new QLineEdit(productGroup);
-    searchEdit->setPlaceholderText("Nhập tên sách hoặc mã sản phẩm...");
+    searchEdit->setPlaceholderText("Enter a product name or ID...");
 
-    searchButton = new QPushButton("Tìm kiếm", productGroup);
+    searchButton = new QPushButton("Search", productGroup);
 
     searchLayout->addWidget(searchEdit);
     searchLayout->addWidget(searchButton);
@@ -62,11 +62,11 @@ void SalesPage::setupUi()
     productTable = new QTableWidget(productGroup);
     productTable->setColumnCount(5);
     productTable->setHorizontalHeaderLabels({
-        "Mã",
-        "Tên sản phẩm",
-        "Đơn giá",
-        "Tồn kho",
-        "Tác giả"
+        "ID",
+        "Product Name",
+        "Unit Price",
+        "Stock",
+        "Author"
     });
 
     productTable->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -82,13 +82,13 @@ void SalesPage::setupUi()
 
     auto* addLayout = new QHBoxLayout();
 
-    auto* quantityLabel = new QLabel("Số lượng:", productGroup);
+    auto* quantityLabel = new QLabel("Quantity:", productGroup);
 
     quantitySpinBox = new QSpinBox(productGroup);
     quantitySpinBox->setRange(1, 999);
     quantitySpinBox->setValue(1);
 
-    addToCartButton = new QPushButton("Thêm vào giỏ", productGroup);
+    addToCartButton = new QPushButton("Add to Cart", productGroup);
 
     addLayout->addWidget(quantityLabel);
     addLayout->addWidget(quantitySpinBox);
@@ -100,15 +100,15 @@ void SalesPage::setupUi()
     // =========================================================
     // BÊN PHẢI: GIỎ HÀNG VÀ THANH TOÁN
     // =========================================================
-    auto* cartGroup = new QGroupBox("Giỏ hàng", this);
+    auto* cartGroup = new QGroupBox("Cart", this);
     auto* cartLayout = new QVBoxLayout(cartGroup);
 
     auto* customerLayout = new QHBoxLayout();
 
-    auto* customerLabel = new QLabel("Khách hàng:", cartGroup);
+    auto* customerLabel = new QLabel("Customer:", cartGroup);
 
     customerComboBox = new QComboBox(cartGroup);
-    customerComboBox->addItem("Khách vãng lai", 0);
+    customerComboBox->addItem("Walk-in Customer", 0);
 
     // Nạp khách hàng thật vào combo (data của mỗi item = id khách)
     CustomerRepository customerRepo;
@@ -126,11 +126,11 @@ void SalesPage::setupUi()
     cartTable = new QTableWidget(cartGroup);
     cartTable->setColumnCount(5);
     cartTable->setHorizontalHeaderLabels({
-        "Mã",
-        "Sản phẩm",
-        "Đơn giá",
-        "Số lượng",
-        "Thành tiền"
+        "ID",
+        "Product",
+        "Unit Price",
+        "Quantity",
+        "Total"
     });
 
     cartTable->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -150,8 +150,8 @@ void SalesPage::setupUi()
 
     auto* cartButtonLayout = new QHBoxLayout();
 
-    removeItemButton = new QPushButton("Xóa sản phẩm", cartGroup);
-    clearCartButton = new QPushButton("Xóa giỏ hàng", cartGroup);
+    removeItemButton = new QPushButton("Remove Item", cartGroup);
+    clearCartButton = new QPushButton("Clear Cart", cartGroup);
 
     cartButtonLayout->addWidget(removeItemButton);
     cartButtonLayout->addWidget(clearCartButton);
@@ -159,7 +159,7 @@ void SalesPage::setupUi()
 
     cartLayout->addLayout(cartButtonLayout);
 
-    totalLabel = new QLabel("TỔNG TIỀN: 0.00", cartGroup);
+    totalLabel = new QLabel("TOTAL: 0.00", cartGroup);
 
     QFont totalFont = totalLabel->font();
     totalFont.setPointSize(14);
@@ -169,7 +169,7 @@ void SalesPage::setupUi()
 
     cartLayout->addWidget(totalLabel);
 
-    checkoutButton = new QPushButton("THANH TOÁN", cartGroup);
+    checkoutButton = new QPushButton("CHECKOUT", cartGroup);
     checkoutButton->setMinimumHeight(45);
 
     QFont checkoutFont = checkoutButton->font();
@@ -275,8 +275,8 @@ void SalesPage::addSelectedProductToCart()
     if (productRow < 0) {
         QMessageBox::warning(
             this,
-            "Chưa chọn sản phẩm",
-            "Vui lòng chọn một sản phẩm."
+            "No Product Selected",
+            "Please select a product."
             );
         return;
     }
@@ -298,8 +298,8 @@ void SalesPage::addSelectedProductToCart()
     if (stockQty <= 0) {
         QMessageBox::warning(
             this,
-            "Hết hàng",
-            "Sản phẩm này hiện đã hết hàng."
+            "Out of Stock",
+            "This product is currently out of stock."
             );
         return;
     }
@@ -307,8 +307,8 @@ void SalesPage::addSelectedProductToCart()
     if (quantity > stockQty) {
         QMessageBox::warning(
             this,
-            "Không đủ tồn kho",
-            QString("Chỉ còn %1 sản phẩm trong kho.").arg(stockQty)
+            "Insufficient Stock",
+            QString("Only %1 product(s) left in stock.").arg(stockQty)
             );
         return;
     }
@@ -327,8 +327,8 @@ void SalesPage::addSelectedProductToCart()
             if (newQuantity > stockQty) {
                 QMessageBox::warning(
                     this,
-                    "Không đủ tồn kho",
-                    QString("Tổng số lượng không được vượt quá %1.")
+                    "Insufficient Stock",
+                    QString("Total quantity cannot exceed %1.")
                         .arg(stockQty)
                     );
                 return;
@@ -398,7 +398,7 @@ void SalesPage::updateTotal()
     }
 
     totalLabel->setText(
-        QString("TỔNG TIỀN: %1")
+        QString("TOTAL: %1")
             .arg(QString::number(total, 'f', 2))
         );
 }
@@ -409,8 +409,8 @@ void SalesPage::removeSelectedCartItem()
     if (row < 0) {
         QMessageBox::warning(
             this,
-            "Chưa chọn sản phẩm",
-            "Vui lòng chọn sản phẩm cần xóa khỏi giỏ."
+            "No Product Selected",
+            "Please select an item to remove from the cart."
             );
         return;
     }
@@ -426,8 +426,8 @@ void SalesPage::clearCart()
 
     const auto answer = QMessageBox::question(
         this,
-        "Xóa giỏ hàng",
-        "Bạn có chắc muốn xóa toàn bộ giỏ hàng không?"
+        "Clear Cart",
+        "Are you sure you want to clear the entire cart?"
         );
 
     if (answer == QMessageBox::Yes) {
@@ -440,8 +440,8 @@ void SalesPage::checkoutOrder()
     if (cartTable->rowCount() == 0) {
         QMessageBox::warning(
             this,
-            "Giỏ hàng trống",
-            "Vui lòng thêm ít nhất một sản phẩm trước khi thanh toán."
+            "Empty Cart",
+            "Please add at least one product before checkout."
             );
         return;
     }
@@ -463,8 +463,8 @@ void SalesPage::checkoutOrder()
         if (!idItem || !nameItem || !priceItem || !quantityItem) {
             QMessageBox::critical(
                 this,
-                "Dữ liệu không hợp lệ",
-                "Một sản phẩm trong giỏ hàng bị thiếu thông tin."
+                "Invalid Data",
+                "A product in the cart is missing information."
                 );
             return;
         }
@@ -485,9 +485,9 @@ void SalesPage::checkoutOrder()
     if (!result.success) {
         QMessageBox::critical(
             this,
-            "Thanh toán thất bại",
+            "Checkout Failed",
             result.errorMessage.isEmpty()
-                ? "Không thể hoàn tất đơn hàng."
+                ? "Unable to complete the order."
                 : result.errorMessage
             );
         return;
@@ -499,9 +499,9 @@ void SalesPage::checkoutOrder()
     const QString receipt = salesService.buildReceipt(order);
 
     QMessageBox receiptBox(this);
-    receiptBox.setWindowTitle("Hóa đơn");
+    receiptBox.setWindowTitle("Receipt");
     receiptBox.setIcon(QMessageBox::Information);
-    receiptBox.setText("Thanh toán thành công.");
+    receiptBox.setText("Payment completed successfully.");
     receiptBox.setDetailedText(receipt);
     receiptBox.setStandardButtons(QMessageBox::Ok);
     receiptBox.exec();

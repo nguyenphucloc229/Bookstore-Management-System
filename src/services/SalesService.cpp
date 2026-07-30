@@ -10,7 +10,7 @@ SalesService::CheckoutResult SalesService::checkout(Order& order)
     CheckoutResult result;
 
     if (order.items().empty()) {
-        result.errorMessage = "Đơn hàng không có sản phẩm.";
+        result.errorMessage = "The order has no products.";
         return result;
     }
 
@@ -21,12 +21,12 @@ SalesService::CheckoutResult SalesService::checkout(Order& order)
         auto product = productRepo.findById(item.productId);
         if (!product) {
             result.errorMessage =
-                QString("Sản phẩm '%1' không còn tồn tại.").arg(item.productName);
+                QString("Product '%1' no longer exists.").arg(item.productName);
             return result;
         }
         if (product->stockQty() < item.quantity) {
             result.errorMessage =
-                QString("Không đủ tồn kho cho '%1' (còn %2, cần %3).")
+                QString("Insufficient stock for '%1' (%2 available, %3 required).")
                     .arg(item.productName)
                     .arg(product->stockQty())
                     .arg(item.quantity);
@@ -38,7 +38,7 @@ SalesService::CheckoutResult SalesService::checkout(Order& order)
     OrderRepository orderRepo;
     const int orderId = orderRepo.save(order);
     if (orderId < 0) {
-        result.errorMessage = "Không thể lưu đơn hàng.";
+        result.errorMessage = "Unable to save the order.";
         return result;
     }
     order.setId(orderId);
@@ -72,20 +72,20 @@ QString SalesService::buildReceipt(const Order& order) const
     QString receipt;
     QTextStream out(&receipt);
 
-    out << "HỆ THỐNG QUẢN LÝ NHÀ SÁCH\n";
+    out << "BOOKSTORE MANAGEMENT SYSTEM\n";
     out << "========================================\n";
-    out << "Ngày: "
+    out << "Date: "
         << order.createdAt().toString("dd/MM/yyyy HH:mm:ss")
         << "\n";
 
     if (order.customerId() == 0) {
-        out << "Khach hang: Khach vang lai\n";
+        out << "Customer: Walk-in Customer\n";
     } else {
-        out << "Ma khach hang: " << order.customerId() << "\n";
+        out << "Customer ID: " << order.customerId() << "\n";
     }
 
     out << "========================================\n";
-    out << "San pham\tSL\tDon gia\tThanh tien\n";
+    out << "Product\tQty\tUnit Price\tTotal\n";
     out << "----------------------------------------\n";
 
     for (const OrderItem& item : order.items()) {
@@ -98,7 +98,7 @@ QString SalesService::buildReceipt(const Order& order) const
     }
 
     out << "----------------------------------------\n";
-    out << "TONG TIEN: "
+    out << "TOTAL: "
         << QString::number(order.total(), 'f', 2)
         << "\n";
     out << "========================================\n";

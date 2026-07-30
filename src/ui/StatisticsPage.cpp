@@ -14,33 +14,33 @@ void StatisticsPage::setupUi()
 {
     auto *layout = new QVBoxLayout(this);
 
-    QLabel *title = new QLabel("<h2>Bảng điều khiển thống kê</h2>");
+    QLabel *title = new QLabel("<h2>Statistics Dashboard</h2>");
     title->setAlignment(Qt::AlignCenter);
 
-    QLabel *revenue = new QLabel("Doanh thu hôm nay: 0 VND");
-    QLabel *orders = new QLabel("Đơn hàng hôm nay: 0");
-    QLabel *stock = new QLabel("Sản phẩm sắp hết hàng: 0");
+    QLabel *revenue = new QLabel("Today's Revenue: 0 VND");
+    QLabel *orders = new QLabel("Today's Orders: 0");
+    QLabel *stock = new QLabel("Low Stock Products: 0");
 
     layout->addWidget(title);
     layout->addWidget(revenue);
     layout->addWidget(orders);
     layout->addWidget(stock);
 
-    QLabel *revenueTitle = new QLabel("<b>Doanh thu theo ngày</b>");
+    QLabel *revenueTitle = new QLabel("<b>Revenue by Day</b>");
     layout->addWidget(revenueTitle);
 
     QTableWidget *revenueTable = new QTableWidget(0,3,this);
     revenueTable->setHorizontalHeaderLabels(
-        {"Ngày","Doanh thu","Đơn hàng"});
+        {"Date","Revenue","Orders"});
     revenueTable->horizontalHeader()->setStretchLastSection(true);
     layout->addWidget(revenueTable);
 
-    QLabel *topTitle = new QLabel("<b>Sản phẩm bán chạy</b>");
+    QLabel *topTitle = new QLabel("<b>Top-Selling Products</b>");
     layout->addWidget(topTitle);
 
     QTableWidget *topTable = new QTableWidget(0,3,this);
     topTable->setHorizontalHeaderLabels(
-        {"Sản phẩm","Đã bán","Doanh thu"});
+        {"Product","Sold","Revenue"});
     topTable->horizontalHeader()->setStretchLastSection(true);
     layout->addWidget(topTable);
 }

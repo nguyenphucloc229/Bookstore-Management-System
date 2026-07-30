@@ -35,9 +35,9 @@ void CustomerPage::setupUi()
     auto *searchLayout = new QHBoxLayout;
 
     searchEdit = new QLineEdit;
-    searchEdit->setPlaceholderText("Nhập tên hoặc SĐT");
+    searchEdit->setPlaceholderText("Enter name or phone number");
 
-    searchButton = new QPushButton("Tìm kiếm");
+    searchButton = new QPushButton("Search");
 
     searchLayout->addWidget(searchEdit);
     searchLayout->addWidget(searchButton);
@@ -49,11 +49,11 @@ void CustomerPage::setupUi()
 
     table->setHorizontalHeaderLabels({
         "ID",
-        "Tên",
-        "SĐT",
+        "Name",
+        "Phone",
         "Email",
-        "Điểm",
-        "Hạng"
+        "Points",
+        "Tier"
     });
 
     table->horizontalHeader()->setStretchLastSection(true);
@@ -66,9 +66,9 @@ void CustomerPage::setupUi()
     // Buttons
     auto *buttonLayout = new QHBoxLayout;
 
-    addButton = new QPushButton("Thêm");
-    editButton = new QPushButton("Sửa");
-    deleteButton = new QPushButton("Xóa");
+    addButton = new QPushButton("Add");
+    editButton = new QPushButton("Edit");
+    deleteButton = new QPushButton("Delete");
 
     buttonLayout->addWidget(addButton);
     buttonLayout->addWidget(editButton);
@@ -106,9 +106,9 @@ void CustomerPage::reloadTable()
                        new QTableWidgetItem(QString::number(customers[i]->point())));
 
         table->setItem(i, 5,
-                       new QTableWidgetItem(customers[i]->rank() == "Gold" ? "Vàng"
-                                            : customers[i]->rank() == "Silver" ? "Bạc"
-                                            : "Thường"));
+                       new QTableWidgetItem(customers[i]->rank() == "Gold" ? "Gold"
+                                            : customers[i]->rank() == "Silver" ? "Silver"
+                                            : "Regular"));
     }
 }
 
@@ -138,7 +138,7 @@ void CustomerPage::onSearchClicked()
                        new QTableWidgetItem("0"));
 
         table->setItem(i, 5,
-                       new QTableWidgetItem("Thường"));
+                       new QTableWidgetItem("Regular"));
     }
 }
 
@@ -169,8 +169,8 @@ void CustomerPage::onAddClicked()
     {
         QMessageBox::critical(
             this,
-            "Lỗi",
-            "Không thể thêm khách hàng."
+            "Error",
+            "Unable to add the customer."
             );
         return;
     }
@@ -179,8 +179,8 @@ void CustomerPage::onAddClicked()
 
     QMessageBox::information(
         this,
-        "Thành công",
-        "Đã thêm khách hàng."
+        "Success",
+        "Customer added successfully."
         );
 }
 
@@ -192,8 +192,8 @@ void CustomerPage::onEditClicked()
     {
         QMessageBox::warning(
             this,
-            "Thông báo",
-            "Hãy chọn khách hàng cần sửa."
+            "Notice",
+            "Please select a customer to edit."
             );
         return;
     }
@@ -204,8 +204,8 @@ void CustomerPage::onEditClicked()
     {
         QMessageBox::warning(
             this,
-            "Lỗi",
-            "Không thể đọc ID khách hàng."
+            "Error",
+            "Unable to read the customer ID."
             );
         return;
     }
@@ -219,8 +219,8 @@ void CustomerPage::onEditClicked()
     {
         QMessageBox::warning(
             this,
-            "Lỗi",
-            "Không tìm thấy khách hàng."
+            "Error",
+            "Customer not found."
             );
         return;
     }
@@ -251,8 +251,8 @@ void CustomerPage::onEditClicked()
     {
         QMessageBox::critical(
             this,
-            "Lỗi",
-            "Không thể cập nhật khách hàng."
+            "Error",
+            "Unable to update the customer."
             );
         return;
     }
@@ -261,8 +261,8 @@ void CustomerPage::onEditClicked()
 
     QMessageBox::information(
         this,
-        "Thành công",
-        "Đã cập nhật khách hàng."
+        "Success",
+        "Customer updated successfully."
         );
 }
 
@@ -273,8 +273,8 @@ void CustomerPage::onDeleteClicked()
     if (row < 0)
     {
         QMessageBox::warning(this,
-                             "Thông báo",
-                             "Hãy chọn khách hàng.");
+                             "Notice",
+                             "Please select a customer.");
         return;
     }
 

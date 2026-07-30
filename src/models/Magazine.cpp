@@ -9,6 +9,6 @@ Magazine::Magazine(int id, const QString& name, double price, int stockQty,
 
 QString Magazine::getDetails() const
 {
-    return QString("[Tạp chí] %1 — Số %2, phát hành %3")
+    return QString("[Magazine] %1 — Issue %2, published %3")
         .arg(name()).arg(m_issueNumber).arg(m_publishDate);
 }

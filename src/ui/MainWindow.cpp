@@ -10,7 +10,7 @@
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
 {
-    setWindowTitle("Hệ thống Quản lý Nhà sách");
+    setWindowTitle("Bookstore Management System");
     resize(1150, 720);
 
     auto* central = new QWidget(this);
@@ -27,10 +27,10 @@ MainWindow::MainWindow(QWidget* parent)
     layout->addWidget(m_pages, 1);
     setCentralWidget(central);
 
-    addPage("Bán hàng", new SalesPage(this));
-    addPage("Sản phẩm", new ProductPage(this));
-    addPage("Khách hàng", new CustomerPage(this));
-    addPage("Thống kê", new StatisticsPage(this));
+    addPage("Sales", new SalesPage(this));
+    addPage("Products", new ProductPage(this));
+    addPage("Customers", new CustomerPage(this));
+    addPage("Statistics", new StatisticsPage(this));
 
     connect(m_nav, &QListWidget::currentRowChanged,
             m_pages, &QStackedWidget::setCurrentIndex);
