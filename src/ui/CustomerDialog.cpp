@@ -23,9 +23,9 @@ CustomerDialog::CustomerDialog(QWidget *parent)
     pointSpinBox->setValue(0);
 
     rankComboBox = new QComboBox(this);
-    rankComboBox->addItem("Regular");
-    rankComboBox->addItem("Silver");
-    rankComboBox->addItem("Gold");
+    rankComboBox->addItem("Thường", "Regular");
+    rankComboBox->addItem("Bạc", "Silver");
+    rankComboBox->addItem("Vàng", "Gold");
 
     // Không cho sửa hạng trực tiếp nếu hạng được tính từ điểm.
     rankComboBox->setEnabled(false);
@@ -74,7 +74,7 @@ void CustomerDialog::setCustomer(const QString &name,
 
     pointSpinBox->setValue(point);
 
-    int rankIndex = rankComboBox->findText(rank);
+    int rankIndex = rankComboBox->findData(rank);
 
     if (rankIndex >= 0)
     {
@@ -108,7 +108,7 @@ int CustomerDialog::point() const
 
 QString CustomerDialog::rank() const
 {
-    return rankComboBox->currentText();
+    return rankComboBox->currentData().toString();
 }
 
 void CustomerDialog::setAddMode()
@@ -116,7 +116,7 @@ void CustomerDialog::setAddMode()
     setWindowTitle("Thêm khách hàng");
 
     pointSpinBox->setValue(0);
-    rankComboBox->setCurrentText("Regular");
+    rankComboBox->setCurrentIndex(rankComboBox->findData("Regular"));
 
     pointSpinBox->setEnabled(true);
     rankComboBox->setEnabled(true);
@@ -134,15 +134,15 @@ void CustomerDialog::updateRankFromPoint(int point)
 {
     if (point >= 1000)
     {
-        rankComboBox->setCurrentText("Gold");
+        rankComboBox->setCurrentIndex(rankComboBox->findData("Gold"));
     }
     else if (point >= 500)
     {
-        rankComboBox->setCurrentText("Silver");
+        rankComboBox->setCurrentIndex(rankComboBox->findData("Silver"));
     }
     else
     {
-        rankComboBox->setCurrentText("Regular");
+        rankComboBox->setCurrentIndex(rankComboBox->findData("Regular"));
     }
 }
 

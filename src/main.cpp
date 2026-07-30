@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
     AppStyle::apply(app);
-    app.setApplicationName("Bookstore Management System");
+    app.setApplicationName("Hệ thống Quản lý Nhà sách");
 
 
     if (!DatabaseManager::instance().open("bookstore.db")) {

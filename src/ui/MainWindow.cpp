@@ -10,7 +10,7 @@
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
 {
-    setWindowTitle("Bookstore Management System");
+    setWindowTitle("Hệ thống Quản lý Nhà sách");
     resize(1150, 720);
 
     auto* central = new QWidget(this);

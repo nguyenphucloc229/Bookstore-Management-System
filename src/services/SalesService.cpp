@@ -72,7 +72,7 @@ QString SalesService::buildReceipt(const Order& order) const
     QString receipt;
     QTextStream out(&receipt);
 
-    out << "BOOKSTORE MANAGEMENT SYSTEM\n";
+    out << "HỆ THỐNG QUẢN LÝ NHÀ SÁCH\n";
     out << "========================================\n";
     out << "Ngày: "
         << order.createdAt().toString("dd/MM/yyyy HH:mm:ss")

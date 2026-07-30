@@ -106,7 +106,9 @@ void CustomerPage::reloadTable()
                        new QTableWidgetItem(QString::number(customers[i]->point())));
 
         table->setItem(i, 5,
-                       new QTableWidgetItem(customers[i]->rank()));
+                       new QTableWidgetItem(customers[i]->rank() == "Gold" ? "Vàng"
+                                            : customers[i]->rank() == "Silver" ? "Bạc"
+                                            : "Thường"));
     }
 }
 
@@ -136,7 +138,7 @@ void CustomerPage::onSearchClicked()
                        new QTableWidgetItem("0"));
 
         table->setItem(i, 5,
-                       new QTableWidgetItem("Regular"));
+                       new QTableWidgetItem("Thường"));
     }
 }
 

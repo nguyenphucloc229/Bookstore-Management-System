@@ -22,14 +22,17 @@ void ProductPage::setupUi()
     auto* topLayout = new QHBoxLayout();
 
     m_searchEdit = new QLineEdit(this);
-    m_searchEdit->setPlaceholderText("Search by product name...");
+    m_searchEdit->setPlaceholderText("Tìm kiếm theo tên sản phẩm...");
 
     m_categoryCombo = new QComboBox(this);
-    m_categoryCombo->addItems({"All", "Book", "Magazine", "Stationery"});
+    m_categoryCombo->addItem("Tất cả", "ALL");
+    m_categoryCombo->addItem("Sách", "BOOK");
+    m_categoryCombo->addItem("Tạp chí", "MAGAZINE");
+    m_categoryCombo->addItem("Văn phòng phẩm", "STATIONERY");
 
-    m_addButton = new QPushButton("Add", this);
-    m_editButton = new QPushButton("Edit", this);
-    m_deleteButton = new QPushButton("Delete", this);
+    m_addButton = new QPushButton("Thêm", this);
+    m_editButton = new QPushButton("Sửa", this);
+    m_deleteButton = new QPushButton("Xóa", this);
 
     topLayout->addWidget(m_searchEdit, 2);
     topLayout->addWidget(m_categoryCombo, 1);
@@ -41,7 +44,7 @@ void ProductPage::setupUi()
 
     m_tableWidget = new QTableWidget(this);
     m_tableWidget->setColumnCount(5);
-    m_tableWidget->setHorizontalHeaderLabels({"ID", "Category", "Name", "Price", "Stock"});
+    m_tableWidget->setHorizontalHeaderLabels({"ID", "Loại", "Tên", "Giá", "Tồn kho"});
     m_tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     m_tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -61,7 +64,7 @@ void ProductPage::reloadTable()
     if (!m_tableWidget) return;
 
     QString searchText = m_searchEdit ? m_searchEdit->text().trimmed() : "";
-    QString category = m_categoryCombo ? m_categoryCombo->currentText() : "All";
+    QString category = m_categoryCombo ? m_categoryCombo->currentData().toString() : "ALL";
 
     auto products = m_repository.getAll();
     m_tableWidget->setRowCount(0);
@@ -70,15 +73,18 @@ void ProductPage::reloadTable()
         if (!product) continue;
 
         if (!searchText.isEmpty() && !product->name().contains(searchText, Qt::CaseInsensitive)) continue;
-        if (category == "Book" && product->getType() != "BOOK") continue;
-        if (category == "Magazine" && product->getType() != "MAGAZINE") continue;
-        if (category == "Stationery" && product->getType() != "STATIONERY") continue;
+        if (category == "BOOK" && product->getType() != "BOOK") continue;
+        if (category == "MAGAZINE" && product->getType() != "MAGAZINE") continue;
+        if (category == "STATIONERY" && product->getType() != "STATIONERY") continue;
 
         int row = m_tableWidget->rowCount();
         m_tableWidget->insertRow(row);
 
         auto* idItem = new QTableWidgetItem(QString::number(product->id()));
-        auto* typeItem = new QTableWidgetItem(product->getType());
+        QString typeLabel = product->getType() == "BOOK" ? "Sách"
+                            : product->getType() == "MAGAZINE" ? "Tạp chí"
+                            : "Văn phòng phẩm";
+        auto* typeItem = new QTableWidgetItem(typeLabel);
         auto* nameItem = new QTableWidgetItem(product->name());
         auto* priceItem = new QTableWidgetItem(QString::number(product->price(), 'f', 2) + " VND");
         auto* stockItem = new QTableWidgetItem(QString::number(product->stockQty()));
@@ -113,7 +119,7 @@ void ProductPage::onEditButtonClicked()
 {
     int currentRow = m_tableWidget->currentRow();
     if (currentRow < 0) {
-        QMessageBox::warning(this, "Warning", "Please select a product to edit.");
+        QMessageBox::warning(this, "Cảnh báo", "Vui lòng chọn một sản phẩm để sửa.");
         return;
     }
 
@@ -137,12 +143,12 @@ void ProductPage::onDeleteButtonClicked()
 {
     int currentRow = m_tableWidget->currentRow();
     if (currentRow < 0) {
-        QMessageBox::warning(this, "Warning", "Please select a product to delete.");
+        QMessageBox::warning(this, "Cảnh báo", "Vui lòng chọn một sản phẩm để xóa.");
         return;
     }
 
     int productId = m_tableWidget->item(currentRow, 0)->text().toInt();
-    if (QMessageBox::question(this, "Confirm deletion", QString("Are you sure you want to delete product ID %1?").arg(productId),
+    if (QMessageBox::question(this, "Xác nhận xóa", QString("Bạn có chắc chắn muốn xóa sản phẩm ID %1?").arg(productId),
                               QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
         m_repository.remove(productId);
         reloadTable();
