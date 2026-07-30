@@ -11,14 +11,14 @@ ProductDialog::ProductDialog(QWidget* parent)
     : QDialog(parent), m_isEditMode(false)
 {
     setupUi();
-    setWindowTitle("Thêm Sản Phẩm Mới");
+    setWindowTitle("Add new product");
 }
 
 ProductDialog::ProductDialog(std::shared_ptr<Product> product, QWidget* parent)
     : QDialog(parent), m_product(product), m_isEditMode(true)
 {
     setupUi();
-    setWindowTitle("Sửa Thông Tin Sản Phẩm");
+    setWindowTitle("Change product information");
 
     if (m_product) {
         m_nameEdit->setText(m_product->name());
@@ -50,19 +50,19 @@ void ProductDialog::setupUi()
     m_typeCombo = new QComboBox(this);
     m_typeCombo->addItems({"Book", "Magazine", "Stationery"});
     if (m_isEditMode) m_typeCombo->setEnabled(false);
-    formLayout->addRow("Loại sản phẩm:", m_typeCombo);
+    formLayout->addRow("Category:", m_typeCombo);
 
     m_nameEdit = new QLineEdit(this);
-    formLayout->addRow("Tên sản phẩm:", m_nameEdit);
+    formLayout->addRow("Name:", m_nameEdit);
 
     m_priceSpin = new QDoubleSpinBox(this);
     m_priceSpin->setRange(0, 1000000000);
-    m_priceSpin->setSuffix(" VNĐ");
-    formLayout->addRow("Giá bán:", m_priceSpin);
+    m_priceSpin->setSuffix(" VND");
+    formLayout->addRow("Price:", m_priceSpin);
 
     m_stockSpin = new QSpinBox(this);
     m_stockSpin->setRange(0, 100000);
-    formLayout->addRow("Số lượng tồn:", m_stockSpin);
+    formLayout->addRow("Stock:", m_stockSpin);
 
     m_lblExtra1 = new QLabel(this);
     m_extra1Edit = new QLineEdit(this);
@@ -100,9 +100,9 @@ void ProductDialog::updateDynamicFields(const QString& type)
     bool isBook = (type == "Book");
     bool isMag = (type == "Magazine");
 
-    m_lblExtra1->setText(isBook ? "ISBN:" : (isMag ? "Số phát hành:" : "Thương hiệu:"));
-    m_lblExtra2->setText(isBook ? "Tác giả:" : (isMag ? "Tháng/Năm:" : "Danh mục VPP:"));
-    m_lblExtra3->setText("Nhà xuất bản:");
+    m_lblExtra1->setText(isBook ? "ISBN:" : (isMag ? "Edition number:" : "Brand:"));
+    m_lblExtra2->setText(isBook ? "Author:" : (isMag ? "Month/Year:" : "Stationery Category:"));
+    m_lblExtra3->setText("Publisher:");
 
     m_lblExtra1->setVisible(true);  m_extra1Edit->setVisible(true);
     m_lblExtra2->setVisible(true);  m_extra2Edit->setVisible(true);
@@ -112,11 +112,11 @@ void ProductDialog::updateDynamicFields(const QString& type)
 bool ProductDialog::validateInputs()
 {
     if (m_nameEdit->text().trimmed().isEmpty()) {
-        QMessageBox::warning(this, "Lỗi nhập liệu", "Tên sản phẩm không được để trống!");
+        QMessageBox::warning(this, "Input error", "Product name cannot be left blank!");
         return false;
     }
     if (m_priceSpin->value() <= 0) {
-        QMessageBox::warning(this, "Lỗi nhập liệu", "Giá sản phẩm phải lớn hơn 0!");
+        QMessageBox::warning(this, "Input error", "Product prize must be greater than 0!");
         return false;
     }
     return true;
