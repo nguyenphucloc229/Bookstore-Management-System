@@ -16,6 +16,11 @@ StatisticsPage::StatisticsPage(QWidget *parent)
     setupUi();
     reloadStats();
 }
+
+void StatisticsPage::refreshData()
+{
+    reloadStats();
+}
 void StatisticsPage::setupUi()
 {
     auto *layout = new QVBoxLayout(this);

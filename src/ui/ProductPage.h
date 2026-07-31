@@ -16,6 +16,9 @@ class ProductPage : public QWidget {
 public:
     explicit ProductPage(QWidget* parent = nullptr);
 
+    // Nạp lại dữ liệu từ DB — MainWindow gọi mỗi khi chuyển sang tab này
+    void refreshData();
+
 private:
     void setupUi();
     void reloadTable();

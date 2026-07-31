@@ -8,6 +8,11 @@
 #include "repositories/CustomerRepository.h"
 #include "ui/CustomerDialog.h"
 
+void CustomerPage::refreshData()
+{
+    reloadTable();
+}
+
 CustomerPage::CustomerPage(QWidget *parent)
     : QWidget(parent)
 {

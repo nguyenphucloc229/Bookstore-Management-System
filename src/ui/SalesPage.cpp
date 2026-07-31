@@ -108,15 +108,7 @@ void SalesPage::setupUi()
     auto* customerLabel = new QLabel("Customer:", cartGroup);
 
     customerComboBox = new QComboBox(cartGroup);
-    customerComboBox->addItem("Walk-in Customer", 0);
-
-    // Nạp khách hàng thật vào combo (data của mỗi item = id khách)
-    CustomerRepository customerRepo;
-    for (const auto& customer : customerRepo.getAll()) {
-        if (customer) {
-            customerComboBox->addItem(customer->name(), customer->id());
-        }
-    }
+    reloadCustomers();
 
     customerLayout->addWidget(customerLabel);
     customerLayout->addWidget(customerComboBox);
@@ -207,6 +199,34 @@ void SalesPage::setupUi()
     // Hiển thị toàn bộ sản phẩm ngay khi mở trang
     loadProducts();
 }
+void SalesPage::reloadCustomers()
+{
+    // Giữ lại khách đang chọn để không bị nhảy về "Walk-in" sau khi nạp lại
+    const int currentId = customerComboBox->currentData().toInt();
+
+    customerComboBox->clear();
+    customerComboBox->addItem("Walk-in Customer", 0);
+
+    // Nạp khách hàng thật vào combo (data của mỗi item = id khách)
+    CustomerRepository customerRepo;
+    for (const auto& customer : customerRepo.getAll()) {
+        if (customer) {
+            customerComboBox->addItem(customer->name(), customer->id());
+        }
+    }
+
+    const int index = customerComboBox->findData(currentId);
+    if (index >= 0) {
+        customerComboBox->setCurrentIndex(index);
+    }
+}
+
+void SalesPage::refreshData()
+{
+    loadProducts();
+    reloadCustomers();
+}
+
 void SalesPage::loadProducts()
 {
     const QString keyword = searchEdit->text().trimmed();

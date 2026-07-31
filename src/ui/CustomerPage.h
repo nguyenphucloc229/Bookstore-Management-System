@@ -22,6 +22,9 @@
 public:
     explicit CustomerPage(QWidget *parent = nullptr);
 
+    // Nạp lại dữ liệu từ DB — MainWindow gọi mỗi khi chuyển sang tab này
+    void refreshData();
+
 private slots:
     void reloadTable();
 

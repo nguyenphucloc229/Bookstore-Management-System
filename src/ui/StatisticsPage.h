@@ -19,6 +19,9 @@ class StatisticsPage : public QWidget {
 public:
     explicit StatisticsPage(QWidget* parent = nullptr);
 
+    // Nạp lại số liệu thống kê — MainWindow gọi mỗi khi chuyển sang tab này
+    void refreshData();
+
 private:
     void setupUi();
     void reloadStats();

@@ -27,14 +27,38 @@ MainWindow::MainWindow(QWidget* parent)
     layout->addWidget(m_pages, 1);
     setCentralWidget(central);
 
-    addPage("Sales", new SalesPage(this));
-    addPage("Products", new ProductPage(this));
-    addPage("Customers", new CustomerPage(this));
-    addPage("Statistics", new StatisticsPage(this));
+    m_salesPage = new SalesPage(this);
+    m_productPage = new ProductPage(this);
+    m_customerPage = new CustomerPage(this);
+    m_statisticsPage = new StatisticsPage(this);
+
+    addPage("Sales", m_salesPage);
+    addPage("Products", m_productPage);
+    addPage("Customers", m_customerPage);
+    addPage("Statistics", m_statisticsPage);
 
     connect(m_nav, &QListWidget::currentRowChanged,
-            m_pages, &QStackedWidget::setCurrentIndex);
+            this, &MainWindow::onPageChanged);
     m_nav->setCurrentRow(0);
+}
+
+void MainWindow::onPageChanged(int index)
+{
+    m_pages->setCurrentIndex(index);
+
+    // Mỗi trang tự nạp lại dữ liệu từ DB khi được mở, nhờ vậy thay đổi ở tab này
+    // (thêm sản phẩm, bán hàng...) hiện ngay ở tab khác mà không cần khởi động lại.
+    QWidget* current = m_pages->currentWidget();
+
+    if (current == m_salesPage) {
+        m_salesPage->refreshData();
+    } else if (current == m_productPage) {
+        m_productPage->refreshData();
+    } else if (current == m_customerPage) {
+        m_customerPage->refreshData();
+    } else if (current == m_statisticsPage) {
+        m_statisticsPage->refreshData();
+    }
 }
 
 void MainWindow::addPage(const QString& title, QWidget* page)

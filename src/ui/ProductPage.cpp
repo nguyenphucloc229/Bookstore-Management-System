@@ -16,6 +16,11 @@ ProductPage::ProductPage(QWidget* parent)
     reloadTable();
 }
 
+void ProductPage::refreshData()
+{
+    reloadTable();
+}
+
 void ProductPage::setupUi()
 {
     auto* mainLayout = new QVBoxLayout(this);

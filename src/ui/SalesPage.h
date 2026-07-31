@@ -16,9 +16,13 @@ class SalesPage : public QWidget
 public:
     explicit SalesPage(QWidget* parent = nullptr);
 
+    // Nạp lại sản phẩm + danh sách khách hàng — MainWindow gọi khi chuyển sang tab này
+    void refreshData();
+
 private:
     void setupUi();
     void loadProducts();
+    void reloadCustomers();
     void addSelectedProductToCart();
     void removeSelectedCartItem();
     void clearCart();
