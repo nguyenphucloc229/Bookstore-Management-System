@@ -9,7 +9,7 @@
 #include <QHeaderView>
 
 
-#include "ReportService.h"
+#include "services/ReportService.h"
 StatisticsPage::StatisticsPage(QWidget *parent)
     : QWidget(parent)
 {
