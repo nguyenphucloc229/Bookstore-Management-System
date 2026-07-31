@@ -1,10 +1,15 @@
 #include "StatisticsPage.h"
+
+
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QTableWidget>
+#include <QTableWidgetItem>
+#include <QDate>
 #include <QHeaderView>
-#include "ReportService.h"
 
+
+#include "ReportService.h"
 StatisticsPage::StatisticsPage(QWidget *parent)
     : QWidget(parent)
 {
@@ -33,6 +38,7 @@ void StatisticsPage::setupUi()
     revenueTable->setHorizontalHeaderLabels(
         {"Date","Revenue","Orders"});
     revenueTable->horizontalHeader()->setStretchLastSection(true);
+    revenueTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     layout->addWidget(revenueTable);
 
     QLabel *topTitle = new QLabel("<b>Top Selling Products</b>");
@@ -42,6 +48,7 @@ void StatisticsPage::setupUi()
     topTable->setHorizontalHeaderLabels(
         {"Product","Sold","Revenue"});
     topTable->horizontalHeader()->setStretchLastSection(true);
+    topTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     layout->addWidget(topTable);
 }
 

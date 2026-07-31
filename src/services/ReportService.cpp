@@ -1,10 +1,10 @@
 #include "ReportService.h"
 #include "db/DatabaseManager.h"
+
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QDebug>
 #include <QDate>
-
-// TODO(Member 5): implement toàn bộ bằng QSqlQuery + GROUP BY
 
 QVector<ReportService::RevenuePoint> ReportService::revenueByDay(const QDate& from,
                                                                  const QDate& to)
@@ -14,13 +14,14 @@ QVector<ReportService::RevenuePoint> ReportService::revenueByDay(const QDate& fr
     QSqlQuery query(DatabaseManager::instance().db());
 
     query.prepare(
-        "SELECT DATE(created_at), "
-        "SUM(total), "
-        "COUNT(*) "
-        "FROM orders "
-        "WHERE DATE(created_at) BETWEEN ? AND ? "
-        "GROUP BY DATE(created_at)"
-    );
+    "SELECT DATE(created_at), "
+    "SUM(total), "
+    "COUNT(*) "
+    "FROM orders "
+    "WHERE DATE(created_at) BETWEEN ? AND ? "
+    "GROUP BY DATE(created_at) "
+    "ORDER BY DATE(created_at)"
+);
 
     query.addBindValue(from.toString("yyyy-MM-dd"));
     query.addBindValue(to.toString("yyyy-MM-dd"));
@@ -41,7 +42,6 @@ QVector<ReportService::RevenuePoint> ReportService::revenueByDay(const QDate& fr
 
     return result;
 }
-
 QVector<ReportService::RevenuePoint> ReportService::revenueByMonth(int year)
 {
     QVector<RevenuePoint> result;
@@ -54,7 +54,8 @@ QVector<ReportService::RevenuePoint> ReportService::revenueByMonth(int year)
         "COUNT(*) "
         "FROM orders "
         "WHERE strftime('%Y', created_at)=? "
-        "GROUP BY strftime('%m', created_at)"
+        "GROUP BY strftime('%m', created_at) "
+        "ORDER BY strftime('%m', created_at)"
     );
 
     query.addBindValue(QString::number(year));
@@ -88,7 +89,7 @@ QVector<ReportService::TopProduct> ReportService::topSellingProducts(int limit)
         "SUM(quantity*unit_price) "
         "FROM order_items "
         "GROUP BY product_id "
-        "ORDER BY SUM(quantity) DESC "
+        "ORDER BY SUM(quantity) DESC, product_name ASC "
         "LIMIT ?"
     );
 
