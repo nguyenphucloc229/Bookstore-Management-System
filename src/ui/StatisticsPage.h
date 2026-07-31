@@ -1,5 +1,8 @@
 #pragma once
 #include <QWidget>
+#include <QLabel>
+#include <QTableWidget>
+
 
 /*
  * StatisticsPage — màn hình Thống kê / Báo cáo (yêu cầu report/statistics của đề).
@@ -19,4 +22,11 @@ public:
 private:
     void setupUi();
     void reloadStats();
+
+    QLabel *revenueLabel;
+    QLabel *ordersLabel;
+    QLabel *stockLabel;
+
+    QTableWidget *revenueTable;
+    QTableWidget *topTable;
 };

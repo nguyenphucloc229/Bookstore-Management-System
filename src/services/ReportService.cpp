@@ -1,9 +1,10 @@
 #include "ReportService.h"
 #include "db/DatabaseManager.h"
+
 #include <QSqlQuery>
 #include <QSqlError>
-
-// TODO(Member 5): implement toàn bộ bằng QSqlQuery + GROUP BY
+#include <QDebug>
+#include <QDate>
 
 QVector<ReportService::RevenuePoint> ReportService::revenueByDay(const QDate& from,
                                                                  const QDate& to)
@@ -13,13 +14,14 @@ QVector<ReportService::RevenuePoint> ReportService::revenueByDay(const QDate& fr
     QSqlQuery query(DatabaseManager::instance().db());
 
     query.prepare(
-        "SELECT DATE(created_at),"
-        "SUM(total),"
-        "COUNT(*) "
-        "FROM orders "
-        "WHERE DATE(created_at) BETWEEN ? AND ? "
-        "GROUP BY DATE(created_at)"
-    );
+    "SELECT DATE(created_at), "
+    "SUM(total), "
+    "COUNT(*) "
+    "FROM orders "
+    "WHERE DATE(created_at) BETWEEN ? AND ? "
+    "GROUP BY DATE(created_at) "
+    "ORDER BY DATE(created_at)"
+);
 
     query.addBindValue(from.toString("yyyy-MM-dd"));
     query.addBindValue(to.toString("yyyy-MM-dd"));
@@ -39,15 +41,41 @@ QVector<ReportService::RevenuePoint> ReportService::revenueByDay(const QDate& fr
     }
 
     return result;
-
 }
-
 QVector<ReportService::RevenuePoint> ReportService::revenueByMonth(int year)
 {
-    (void)year;
-    return {}; // TODO(Member 5)
-}
+    QVector<RevenuePoint> result;
 
+    QSqlQuery query(DatabaseManager::instance().db());
+
+    query.prepare(
+        "SELECT strftime('%m', created_at), "
+        "SUM(total), "
+        "COUNT(*) "
+        "FROM orders "
+        "WHERE strftime('%Y', created_at)=? "
+        "GROUP BY strftime('%m', created_at) "
+        "ORDER BY strftime('%m', created_at)"
+    );
+
+    query.addBindValue(QString::number(year));
+
+    if(query.exec())
+    {
+        while(query.next())
+        {
+            RevenuePoint p;
+
+            p.label=query.value(0).toString();
+            p.revenue=query.value(1).toDouble();
+            p.orderCount=query.value(2).toInt();
+
+            result.push_back(p);
+        }
+    }
+
+    return result;
+}
 QVector<ReportService::TopProduct> ReportService::topSellingProducts(int limit)
 {
     QVector<TopProduct> result;
@@ -55,13 +83,13 @@ QVector<ReportService::TopProduct> ReportService::topSellingProducts(int limit)
     QSqlQuery query(DatabaseManager::instance().db());
 
     query.prepare(
-        "SELECT product_id,"
-        "product_name,"
-        "SUM(quantity),"
-        "SUM(quantity*unit_price)"
-        " FROM order_items "
+        "SELECT product_id, "
+        "product_name, "
+        "SUM(quantity), "
+        "SUM(quantity*unit_price) "
+        "FROM order_items "
         "GROUP BY product_id "
-        "ORDER BY SUM(quantity) DESC "
+        "ORDER BY SUM(quantity) DESC, product_name ASC "
         "LIMIT ?"
     );
 
@@ -84,27 +112,50 @@ QVector<ReportService::TopProduct> ReportService::topSellingProducts(int limit)
 
     return result;
 }
-
-    double ReportService::totalRevenueToday()
+double ReportService::totalRevenueToday()
 {
     QSqlQuery query(DatabaseManager::instance().db());
 
-    query.exec("SELECT IFNULL(SUM(total),0) FROM orders");
+    query.exec(
+        "SELECT IFNULL(SUM(total),0) "
+        "FROM orders "
+        "WHERE DATE(created_at)=DATE('now')"
+    );
 
     if(query.next())
         return query.value(0).toDouble();
 
     return 0;
 }
-
-
 int ReportService::totalOrdersToday()
 {
-    return 0; // TODO(Member 5)
-}
+    QSqlQuery query(DatabaseManager::instance().db());
 
+    query.exec(
+        "SELECT COUNT(*) "
+        "FROM orders "
+        "WHERE DATE(created_at)=DATE('now')"
+    );
+
+    if(query.next())
+        return query.value(0).toInt();
+
+    return 0;
+}
 int ReportService::lowStockCount(int threshold)
 {
-    (void)threshold;
-    return 0; // TODO(Member 5)
+    QSqlQuery query(DatabaseManager::instance().db());
+
+    query.prepare(
+        "SELECT COUNT(*) "
+        "FROM products "
+        "WHERE stock_qty <= ?"
+    );
+
+    query.addBindValue(threshold);
+
+    if(query.exec() && query.next())
+        return query.value(0).toInt();
+
+    return 0;
 }
