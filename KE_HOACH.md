@@ -172,7 +172,7 @@ git push
 ```
 src/
 ├── models/        Class OOP thuần: Product, Book, Customer, Order...
-├── factories/     ProductFactory              [Pattern: Factory]
+├── factories/     ProductFactory              [Pattern: Simple Factory]
 ├── db/            DatabaseManager             [Pattern: Singleton]
 ├── repositories/  Đọc/ghi SQLite — UI không viết SQL trực tiếp
 ├── services/      Business logic: bán hàng (checkout, hoá đơn), thống kê
@@ -227,7 +227,7 @@ classDiagram
     OrderItem --> Product
 
     class ProductFactory {
-        <<Factory>>
+        <<Simple Factory>>
         +create(type, data)$ Product
     }
     class DatabaseManager {
