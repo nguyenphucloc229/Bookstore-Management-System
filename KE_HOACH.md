@@ -25,6 +25,7 @@
 - CustomerPage: bảng + form Thêm/Sửa + validate
 - Slide thuyết trình toàn bộ (nhận nội dung từ các bạn)
 - Report: chương Group Intro + Problem Domain & Requirements
+- Video: demo module khách hàng (thêm/sửa/xoá, tìm kiếm, điểm & hạng thành viên)
 
 ### Võ Viết Tân — Bán hàng POS
 - SalesService: checkout (kiểm kho → tính tổng → lưu đơn → trừ kho) + buildReceipt (hoá đơn)
@@ -37,7 +38,7 @@
 - ReportService: tổng doanh thu, doanh thu theo ngày, top sản phẩm bán chạy
 - StatisticsPage: vài con số thống kê + bảng doanh thu theo ngày + bảng top bán chạy
 - Seed data demo (sản phẩm, khách hàng, vài đơn hàng)
-- Video: kịch bản + quay + dựng toàn bộ
+- Video: kịch bản + quay + dựng toàn bộ, VÀ tự demo trang Thống kê (phải xuất hiện/nói trên video)
 - Report: chương Challenges & Future + gom AI usage log 5 người
 
 ### Việc cá nhân
@@ -201,12 +202,25 @@ classDiagram
     class Customer {
         -int id
         -QString name, phone, email
+        -int point
+        -QString rank
+        +setPoint(int)
+        +updateRank()
     }
 
     class Order {
+        -int customerId
         -QDateTime createdAt
+        +addItem(OrderItem)
         +subtotal() double
         +total() double
+    }
+    class OrderItem {
+        +int productId
+        +QString productName
+        +double unitPrice
+        +int quantity
+        +lineTotal() double
     }
     Order *-- OrderItem : composition
     Order --> Customer
@@ -219,14 +233,78 @@ classDiagram
     class DatabaseManager {
         <<Singleton>>
         +instance()$
+        +db() QSqlDatabase
+    }
+    class ProductRepository {
+        +add(Product) int
+        +search(keyword, type)
+        +lowStock(threshold)
+        +decrementStock(id, qty) bool
+    }
+    class CustomerRepository {
+        +add(Customer) int
+        +findById(id) Customer
+        +update(Customer) bool
+    }
+    class OrderRepository {
+        +save(Order) int
     }
     class SalesService {
-        +checkout(order)
+        +checkout(order) CheckoutResult
         +buildReceipt(order) QString
+    }
+    class ReportService {
+        +totalRevenueToday() double
+        +revenueByDay(from, to)
+        +topSellingProducts(limit)
     }
     ProductFactory ..> Book : creates
     SalesService ..> Order : processes
+    SalesService ..> ProductRepository : kiểm + trừ kho
+    SalesService ..> CustomerRepository : cộng điểm
+    SalesService ..> OrderRepository : lưu đơn
+    ProductRepository ..> ProductFactory : dựng object
+    ProductRepository ..> DatabaseManager
+    ReportService ..> DatabaseManager
 ```
+
+### 3.3. Hạng thành viên & tích điểm
+
+- Mỗi 10.000đ giá trị đơn hàng → khách được **1 điểm** (`SalesService::checkout`).
+- Hạng tự tính lại từ điểm qua `Customer::updateRank()`:
+  | Điểm | Hạng |
+  |---|---|
+  | ≥ 1000 | Gold |
+  | ≥ 500 | Silver |
+  | < 500 | Regular |
+- Khách vãng lai (`customerId = 0`) không tích điểm, lưu `customer_id = NULL`.
+
+### 3.4. Quy trình thanh toán (business logic vượt CRUD)
+
+1. Giỏ rỗng → báo lỗi, dừng.
+2. Kiểm tồn kho từng sản phẩm; thiếu hàng → báo rõ còn bao nhiêu/cần bao nhiêu, **không lưu đơn**.
+3. Lưu `orders` + `order_items` trong **một transaction** (lỗi giữa chừng thì rollback toàn bộ).
+4. Trừ tồn kho từng sản phẩm (`decrementStock` kiểm tra atomic, không cho âm kho).
+5. Cộng điểm + cập nhật hạng cho khách thành viên.
+6. Sinh hoá đơn text hiển thị cho người dùng.
+
+### 3.5. Đối chiếu yêu cầu đề bài
+
+| Yêu cầu | Thể hiện ở đâu |
+|---|---|
+| Abstraction | `Product` là abstract class (`getType()`, `getDetails()` pure virtual) |
+| Encapsulation | Thuộc tính private + getter/setter có kiểm tra (`setPrice` chặn giá âm, `setPoint` chặn điểm âm) |
+| Inheritance | `Product → Book / Magazine / Stationery` |
+| Polymorphism | Duyệt `Product*` gọi `getDetails()`/`getType()` chạy đúng bản lớp con; `dynamic_cast` trong `ProductRepository` |
+| Design pattern 1 | **Singleton** — `DatabaseManager::instance()` |
+| Design pattern 2 | **Factory** — `ProductFactory::create()` |
+| Composition | `Order` chứa `QVector<OrderItem>` |
+| CRUD + search/filter | Product, Customer (tìm theo tên/SĐT, lọc theo loại) |
+| Validation | Form báo lỗi: tên rỗng, giá ≤ 0, thiếu tồn kho |
+| Business logic vượt CRUD | Quy trình thanh toán ở mục 3.4 |
+| Data persistence | SQLite 4 bảng: products, customers, orders, order_items |
+| Report / dashboard | `StatisticsPage`: doanh thu hôm nay, số đơn, SP sắp hết, doanh thu theo ngày, top bán chạy |
+| Receipt | `SalesService::buildReceipt()` |
 
 
 
