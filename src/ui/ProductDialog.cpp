@@ -32,6 +32,7 @@ ProductDialog::ProductDialog(std::shared_ptr<Product> product, QWidget* parent)
             m_extra1Edit->setText(book->isbn());
             m_extra2Edit->setText(book->author());
             m_extra3Edit->setText(book->publisher());
+            m_extra4Edit->setText(book->genre());
         } else if (auto mag = std::dynamic_pointer_cast<Magazine>(m_product)) {
             m_extra1Edit->setText(QString::number(mag->issueNumber()));
             m_extra2Edit->setText(mag->publishDate());
@@ -72,10 +73,13 @@ void ProductDialog::setupUi()
     m_extra2Edit = new QLineEdit(this);
     m_lblExtra3 = new QLabel(this);
     m_extra3Edit = new QLineEdit(this);
+    m_lblExtra4 = new QLabel(this);
+    m_extra4Edit = new QLineEdit(this);
 
     formLayout->addRow(m_lblExtra1, m_extra1Edit);
     formLayout->addRow(m_lblExtra2, m_extra2Edit);
     formLayout->addRow(m_lblExtra3, m_extra3Edit);
+    formLayout->addRow(m_lblExtra4, m_extra4Edit);
 
     mainLayout->addLayout(formLayout);
 
@@ -105,10 +109,12 @@ void ProductDialog::updateDynamicFields(const QString& type)
     m_lblExtra1->setText(isBook ? "ISBN:" : (isMag ? "Issue Number:" : "Brand:"));
     m_lblExtra2->setText(isBook ? "Author:" : (isMag ? "Month/Year:" : "Stationery Category:"));
     m_lblExtra3->setText("Publisher:");
+    m_lblExtra4->setText("Genre:");
 
     m_lblExtra1->setVisible(true);  m_extra1Edit->setVisible(true);
     m_lblExtra2->setVisible(true);  m_extra2Edit->setVisible(true);
     m_lblExtra3->setVisible(isBook); m_extra3Edit->setVisible(isBook);
+    m_lblExtra4->setVisible(isBook); m_extra4Edit->setVisible(isBook);
 }
 
 bool ProductDialog::validateInputs()
@@ -139,7 +145,7 @@ void ProductDialog::onSaveClicked()
                                            m_extra1Edit->text().trimmed(),
                                            m_extra2Edit->text().trimmed(),
                                            m_extra3Edit->text().trimmed(),
-                                           "");
+                                           m_extra4Edit->text().trimmed());
     } else if (type == "MAGAZINE") {
         m_product = std::make_shared<Magazine>(id, name, price, stock,
                                                m_extra1Edit->text().toInt(),

@@ -119,7 +119,9 @@ void CustomerDialog::setAddMode()
     rankComboBox->setCurrentIndex(rankComboBox->findData("Regular"));
 
     pointSpinBox->setEnabled(true);
-    rankComboBox->setEnabled(true);
+    // Hạng luôn suy ra từ điểm (updateRankFromPoint), không cho sửa tay
+    // để dữ liệu không mâu thuẫn (vd: 0 điểm nhưng hạng Gold).
+    rankComboBox->setEnabled(false);
 }
 
 void CustomerDialog::setEditMode()
@@ -127,7 +129,7 @@ void CustomerDialog::setEditMode()
     setWindowTitle("Edit Customer");
 
     pointSpinBox->setEnabled(true);
-    rankComboBox->setEnabled(true);
+    rankComboBox->setEnabled(false);   // xem mục setAddMode()
 }
 
 void CustomerDialog::updateRankFromPoint(int point)

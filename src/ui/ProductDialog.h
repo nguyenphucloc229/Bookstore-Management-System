@@ -36,10 +36,12 @@ private:
     QLineEdit* m_extra1Edit{nullptr};
     QLineEdit* m_extra2Edit{nullptr};
     QLineEdit* m_extra3Edit{nullptr};
+    QLineEdit* m_extra4Edit{nullptr};   // Genre (chỉ dùng cho Book)
 
     QLabel* m_lblExtra1{nullptr};
     QLabel* m_lblExtra2{nullptr};
     QLabel* m_lblExtra3{nullptr};
+    QLabel* m_lblExtra4{nullptr};
 
     std::shared_ptr<Product> m_product{nullptr};
     bool m_isEditMode{false};

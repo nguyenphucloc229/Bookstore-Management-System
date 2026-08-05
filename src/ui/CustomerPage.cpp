@@ -140,10 +140,10 @@ void CustomerPage::onSearchClicked()
                        new QTableWidgetItem(customers[i]->email()));
 
         table->setItem(i, 4,
-                       new QTableWidgetItem("0"));
+                       new QTableWidgetItem(QString::number(customers[i]->point())));
 
         table->setItem(i, 5,
-                       new QTableWidgetItem("Regular"));
+                       new QTableWidgetItem(customers[i]->rank()));
     }
 }
 
