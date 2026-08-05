@@ -83,13 +83,16 @@ QVector<ReportService::TopProduct> ReportService::topSellingProducts(int limit)
     QSqlQuery query(DatabaseManager::instance().db());
 
     query.prepare(
+        // MAX(product_name): mỗi order_item lưu tên tại thời điểm bán, nếu sản phẩm
+        // được đổi tên thì một product_id có thể có nhiều tên khác nhau. Dùng hàm
+        // gộp để kết quả luôn xác định thay vì phụ thuộc SQLite chọn hộ.
         "SELECT product_id, "
-        "product_name, "
+        "MAX(product_name), "
         "SUM(quantity), "
         "SUM(quantity*unit_price) "
         "FROM order_items "
         "GROUP BY product_id "
-        "ORDER BY SUM(quantity) DESC, product_name ASC "
+        "ORDER BY SUM(quantity) DESC, MAX(product_name) ASC "
         "LIMIT ?"
     );
 
@@ -119,7 +122,7 @@ double ReportService::totalRevenueToday()
     query.exec(
         "SELECT IFNULL(SUM(total),0) "
         "FROM orders "
-        "WHERE DATE(created_at)=DATE('now')"
+        "WHERE DATE(created_at)=DATE('now','localtime')"
     );
 
     if(query.next())
@@ -134,7 +137,7 @@ int ReportService::totalOrdersToday()
     query.exec(
         "SELECT COUNT(*) "
         "FROM orders "
-        "WHERE DATE(created_at)=DATE('now')"
+        "WHERE DATE(created_at)=DATE('now','localtime')"
     );
 
     if(query.next())
