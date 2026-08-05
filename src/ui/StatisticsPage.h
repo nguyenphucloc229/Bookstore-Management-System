@@ -8,9 +8,9 @@
  * StatisticsPage — màn hình Thống kê / Báo cáo (yêu cầu report/statistics của đề).
  * NGƯỜI PHỤ TRÁCH: Lương (Member 5)
  *
- * Yêu cầu UI:
- *  - Vài con số thống kê: tổng doanh thu | số đơn | SP sắp hết hàng.
- *  - Chọn khoảng ngày (QDateEdit from/to) -> bảng doanh thu theo ngày.
+ * Nội dung hiển thị:
+ *  - Ba con số thống kê: doanh thu hôm nay | số đơn hôm nay | SP sắp hết hàng.
+ *  - Bảng doanh thu theo ngày (mặc định 7 ngày gần nhất).
  *  - Bảng top sản phẩm bán chạy.
  */
 class StatisticsPage : public QWidget {

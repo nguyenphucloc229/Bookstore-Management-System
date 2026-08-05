@@ -158,7 +158,9 @@ std::vector<std::unique_ptr<Product>> ProductRepository::search(const QString& k
     QString sql = "SELECT * FROM products WHERE 1=1";
 
     if (!keyword.isEmpty()) {
-        sql += " AND (name LIKE :kw OR author LIKE :kw OR brand LIKE :kw)";
+        // Tìm theo tên/tác giả/thương hiệu, và theo mã sản phẩm khi nhập vào là số
+        sql += " AND (name LIKE :kw OR author LIKE :kw OR brand LIKE :kw"
+               " OR CAST(id AS TEXT) = :exactId)";
     }
     if (!type.isEmpty()) {
         sql += " AND type = :type";
@@ -169,6 +171,7 @@ std::vector<std::unique_ptr<Product>> ProductRepository::search(const QString& k
 
     if (!keyword.isEmpty()) {
         q.bindValue(":kw", "%" + keyword + "%");
+        q.bindValue(":exactId", keyword.trimmed());
     }
     if (!type.isEmpty()) {
         q.bindValue(":type", type);

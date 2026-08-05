@@ -13,8 +13,6 @@ public:
     // (nếu 1 item lỗi -> rollback tất cả). Trả về order id hoặc -1.
     int save(const Order& order);
 
-    std::unique_ptr<Order> findById(int id);
-    std::vector<std::unique_ptr<Order>> getAll();
     std::vector<std::unique_ptr<Order>> byDateRange(const QDateTime& from,
                                                     const QDateTime& to);
 };
