@@ -8,9 +8,9 @@
  * ProductRepository — đọc/ghi bảng `products` trong SQLite.
  * UI KHÔNG được viết SQL trực tiếp — mọi truy vấn đi qua đây (separation).
  *
- * NGƯỜI PHỤ TRÁCH: Member 2
- * Gợi ý: dùng QSqlQuery + prepare/bindValue để tránh SQL injection.
- * Khi đọc 1 dòng từ DB -> đổ vào ProductData -> gọi ProductFactory::create().
+ * Phụ trách: Vũ Bình Nguyên
+ * Mọi câu truy vấn dùng prepare/bindValue để tránh SQL injection.
+ * Khi đọc 1 dòng từ DB: đổ vào ProductData rồi gọi ProductFactory::create().
  */
 class ProductRepository {
 public:
@@ -30,6 +30,6 @@ public:
     // Sản phẩm sắp hết hàng (stock_qty <= threshold) — cho cảnh báo tồn kho
     std::vector<std::unique_ptr<Product>> lowStock(int threshold = 5);
 
-    // Trừ tồn kho khi bán — trả về false nếu không đủ hàng (Member 4 gọi hàm này)
+    // Trừ tồn kho khi bán, trả về false nếu không đủ hàng. SalesService gọi khi checkout.
     bool decrementStock(int productId, int qty);
 };

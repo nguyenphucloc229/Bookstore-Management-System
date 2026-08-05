@@ -530,6 +530,6 @@ void SalesPage::checkoutOrder()
     quantitySpinBox->setValue(1);
     updateTotal();
 
-    // Tải lại để cập nhật tồn kho khi Member 2 hoàn thiện decrementStock()
+    // Tải lại bảng sản phẩm để thấy tồn kho vừa bị trừ sau khi thanh toán
     loadProducts();
 }

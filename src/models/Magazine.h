@@ -1,7 +1,7 @@
 #pragma once
 #include "Product.h"
 
-// Tạp chí — lớp con của Product (Inheritance)
+// Tạp chí — lớp con của Product (Inheritance). Phụ trách: Nguyễn Phúc Lộc
 class Magazine : public Product {
 public:
     Magazine(int id, const QString& name, double price, int stockQty,

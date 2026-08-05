@@ -3,6 +3,7 @@
 
 /*
  * Customer — khách hàng của cửa hàng.
+ * Phụ trách: Nguyễn Trịnh Quốc Đạt
  * Lưu thông tin liên hệ + hệ thống tích luỹ: điểm (point) và hạng thành viên
  * (rank: Regular/Silver/Gold — tự tính từ point qua updateRank()).
  */

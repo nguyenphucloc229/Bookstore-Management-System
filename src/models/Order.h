@@ -18,7 +18,7 @@ struct OrderItem {
 
 /*
  * Order — đơn hàng, chứa nhiều OrderItem (quan hệ Composition).
- * Người phụ trách logic bán hàng: Tân (Member 4).
+ * Phụ trách: Võ Viết Tân.
  */
 class Order {
 public:
@@ -41,7 +41,8 @@ public:
     // Tổng tiền của đơn = tổng các dòng
     double subtotal() const;
 
-    // Thành tiền (scope tối thiểu không có giảm giá nên total = subtotal)
+    // Thành tiền của đơn. Hệ thống hiện chưa có chương trình giảm giá nên
+    // total = subtotal; tách riêng hàm để sau này thêm giảm giá không phải sửa nơi gọi.
     double total() const { return subtotal(); }
 
 private:

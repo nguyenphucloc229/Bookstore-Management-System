@@ -4,10 +4,11 @@
 #include <QVector>
 
 /*
- * ReportService — thống kê / báo cáo (yêu cầu dashboard trong đề, mục 3.5).
- * NGƯỜI PHỤ TRÁCH: Member 5
- * Gợi ý: dùng SQL GROUP BY trực tiếp cho nhanh, ví dụ:
- *   SELECT DATE(created_at) d, SUM(total) FROM orders GROUP BY d
+ * ReportService — thống kê / báo cáo cho trang Statistics.
+ * Phụ trách: Quách Hiền Lương
+ *
+ * Số liệu được tổng hợp trực tiếp bằng SQL (SUM/GROUP BY) trên hai bảng
+ * `orders` và `order_items` thay vì đọc hết dữ liệu lên rồi tính trong C++.
  */
 class ReportService {
 public:

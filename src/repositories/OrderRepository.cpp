@@ -4,14 +4,6 @@
 #include <QSqlError>
 #include <QVariant>
 #include <QDebug>
-// TODO(Member 4): implement.
-// Gợi ý transaction:
-//   auto& db = DatabaseManager::instance().db();
-//   db.transaction();
-//   ... INSERT INTO orders ... -> lấy lastInsertId()
-//   ... INSERT INTO order_items cho từng item ...
-//   nếu tất cả OK -> db.commit(); nếu lỗi -> db.rollback();
-
 int OrderRepository::save(const Order& order)
 {
     auto& db = DatabaseManager::instance().db();

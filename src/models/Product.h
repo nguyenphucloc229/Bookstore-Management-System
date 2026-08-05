@@ -11,7 +11,7 @@
  *  - Polymorphism  : getType()/getDetails() gọi qua con trỏ Product* sẽ chạy
  *                    đúng phiên bản của lớp con (runtime polymorphism).
  *
- * Người phụ trách thiết kế: Member 1 (Lộc)
+ * Phụ trách: Nguyễn Phúc Lộc
  */
 class Product {
 public:
@@ -34,7 +34,7 @@ public:
     void setPrice(double price);      // không cho giá âm
     void setStockQty(int qty);        // không cho tồn kho âm
 
-    // Sắp hết hàng? Dùng cho cảnh báo tồn kho (Member 2)
+    // Tồn kho <= threshold? Dùng cho cảnh báo sắp hết hàng ở ProductPage
     bool isLowStock(int threshold = 5) const { return m_stockQty <= threshold; }
 
 private:

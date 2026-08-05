@@ -11,7 +11,7 @@
  *  3. Lưu Order + OrderItems (transaction).
  *  4. Trừ tồn kho từng sản phẩm.
  *
- * NGƯỜI PHỤ TRÁCH: Tân (Member 4)
+ * Phụ trách: Võ Viết Tân
  */
 class SalesService {
 public:

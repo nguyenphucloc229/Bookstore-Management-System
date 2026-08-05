@@ -5,7 +5,7 @@
 
 /*
  * OrderRepository — đọc/ghi bảng `orders` + `order_items`.
- * NGƯỜI PHỤ TRÁCH: Member 4
+ * Phụ trách: Võ Viết Tân
  */
 class OrderRepository {
 public:

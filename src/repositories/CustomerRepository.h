@@ -5,7 +5,7 @@
 
 /*
  * CustomerRepository — đọc/ghi bảng `customers`.
- * NGƯỜI PHỤ TRÁCH: Member 3
+ * Phụ trách: Nguyễn Trịnh Quốc Đạt
  */
 class CustomerRepository {
 public:

@@ -10,7 +10,7 @@
  * chỉ cần đưa `type` + dữ liệu, Factory trả về đúng object qua con trỏ Product*.
  * Thêm loại sản phẩm mới -> chỉ sửa Factory, không sửa UI (Open/Closed).
  *
- * Người phụ trách: Member 1 (Lộc)
+ * Phụ trách: Nguyễn Phúc Lộc
  */
 
 // Gói toàn bộ dữ liệu thô của 1 sản phẩm (đọc từ form hoặc từ DB)

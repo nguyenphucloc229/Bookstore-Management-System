@@ -20,7 +20,7 @@
 - Report: chương Implementation & Testing + tổng hợp/format file PDF cuối
 - Video: demo module sản phẩm
 
-### Lê Quốc Đạt — Module Khách hàng
+### Nguyễn Trịnh Quốc Đạt — Module Khách hàng
 - CustomerRepository: CRUD + search
 - CustomerPage: bảng + form Thêm/Sửa + validate
 - Slide thuyết trình toàn bộ (nhận nội dung từ các bạn)

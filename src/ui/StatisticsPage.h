@@ -6,7 +6,7 @@
 
 /*
  * StatisticsPage — màn hình Thống kê / Báo cáo (yêu cầu report/statistics của đề).
- * NGƯỜI PHỤ TRÁCH: Lương (Member 5)
+ * Phụ trách: Quách Hiền Lương
  *
  * Nội dung hiển thị:
  *  - Ba con số thống kê: doanh thu hôm nay | số đơn hôm nay | SP sắp hết hàng.
