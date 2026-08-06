@@ -354,6 +354,12 @@ void SalesPage::addSelectedProductToCart()
                 return;
             }
 
+            // Cập nhật lại cả đơn giá theo giá hiện tại trong kho, nếu không
+            // cột Total sẽ tính theo giá mới còn đơn hàng lưu theo giá cũ.
+            cartTable->item(row, 2)->setText(
+                QString::number(unitPrice, 'f', 2)
+                );
+
             cartTable->item(row, 3)->setText(
                 QString::number(newQuantity)
                 );

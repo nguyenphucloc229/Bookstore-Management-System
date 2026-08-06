@@ -115,7 +115,10 @@ void ProductPage::onAddButtonClicked()
 {
     ProductDialog dialog(this);
     if (dialog.exec() == QDialog::Accepted && dialog.getProduct()) {
-        m_repository.add(*dialog.getProduct());
+        if (m_repository.add(*dialog.getProduct()) < 0) {
+            QMessageBox::critical(this, "Error", "Unable to add the product.");
+            return;
+        }
         reloadTable();
     }
 }
@@ -138,7 +141,10 @@ void ProductPage::onEditButtonClicked()
         std::shared_ptr<Product> targetProduct(it->get(), [](Product*){});
         ProductDialog dialog(targetProduct, this);
         if (dialog.exec() == QDialog::Accepted && dialog.getProduct()) {
-            m_repository.update(*dialog.getProduct());
+            if (!m_repository.update(*dialog.getProduct())) {
+                QMessageBox::critical(this, "Error", "Unable to update the product.");
+                return;
+            }
             reloadTable();
         }
     }
@@ -155,7 +161,10 @@ void ProductPage::onDeleteButtonClicked()
     int productId = m_tableWidget->item(currentRow, 0)->text().toInt();
     if (QMessageBox::question(this, "Confirm Deletion", QString("Are you sure you want to delete product ID %1?").arg(productId),
                               QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
-        m_repository.remove(productId);
+        if (!m_repository.remove(productId)) {
+            QMessageBox::critical(this, "Error", "Unable to delete the product.");
+            return;
+        }
         reloadTable();
     }
 }

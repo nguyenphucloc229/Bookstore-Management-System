@@ -20,11 +20,9 @@ Customer::Customer(int id,
         m_point = 0;
     }
 
-    // Nếu database chưa có rank thì tự tính
-    if (m_rank.isEmpty())
-    {
-        updateRank();
-    }
+    // Hạng luôn được tính lại từ điểm, kể cả khi database đã có sẵn giá trị.
+    // Nhờ vậy dữ liệu cũ hoặc bị sửa tay ngoài ứng dụng cũng tự động chuẩn hoá.
+    updateRank();
 }
 
 // Constructor cho khách hàng mới

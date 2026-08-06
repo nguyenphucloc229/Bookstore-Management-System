@@ -75,14 +75,12 @@ public:
         m_email = value.trimmed();
     }
 
+    // Đặt điểm, đồng thời tính lại hạng. Không có setRank() công khai:
+    // hạng chỉ được suy ra từ điểm nên không thể tạo ra dữ liệu mâu thuẫn
+    // (ví dụ 50 điểm nhưng hạng Gold).
     void setPoint(int point);
 
-    void setRank(const QString &rank)
-    {
-        m_rank = rank.trimmed();
-    }
-
-    // Tự động tính hạng dựa trên điểm
+    // Tính lại hạng dựa trên điểm hiện tại
     void updateRank();
 
 private:

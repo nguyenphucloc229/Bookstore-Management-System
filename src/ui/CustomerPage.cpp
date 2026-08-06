@@ -249,8 +249,8 @@ void CustomerPage::onEditClicked()
     customer->setName(dialog.name());
     customer->setPhone(dialog.phone());
     customer->setEmail(dialog.email());
+    // setPoint() tự cập nhật hạng nên không cần (và không thể) gán hạng trực tiếp
     customer->setPoint(dialog.point());
-    customer->setRank(dialog.rank());
 
     if (!repo.update(*customer))
     {
