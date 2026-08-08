@@ -103,6 +103,13 @@ void ProductPage::reloadTable()
             stockItem->setBackground(lowStockBrush);
         }
 
+        const QString details = product->getDetails();
+        idItem->setToolTip(details);
+        typeItem->setToolTip(details);
+        nameItem->setToolTip(details);
+        priceItem->setToolTip(details);
+        stockItem->setToolTip(details);
+
         m_tableWidget->setItem(row, 0, idItem);
         m_tableWidget->setItem(row, 1, typeItem);
         m_tableWidget->setItem(row, 2, nameItem);
