@@ -6,15 +6,7 @@
 #include <QTableWidget>
 #include <QObject>
 
-/*
- * CustomerPage — màn hình Quản lý khách hàng.
- * Phụ trách: Nguyễn Trịnh Quốc Đạt
- *
- * Nội dung hiển thị:
- *  - Bảng: ID, Tên, SĐT, Email, Điểm, Hạng (Regular/Silver/Gold).
- *  - Tìm kiếm theo tên hoặc SĐT.
- *  - Thêm / Sửa / Xoá qua CustomerDialog, có kiểm tra dữ liệu nhập.
- */
+// Phụ trách: Nguyễn Trịnh Quốc Đạt
  class CustomerPage : public QWidget
 {
     Q_OBJECT

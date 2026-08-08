@@ -4,14 +4,7 @@
 #include "models/Product.h"
 #include "factories/ProductFactory.h"
 
-/*
- * ProductRepository — đọc/ghi bảng `products` trong SQLite.
- * UI KHÔNG được viết SQL trực tiếp — mọi truy vấn đi qua đây (separation).
- *
- * Phụ trách: Vũ Bình Nguyên
- * Mọi câu truy vấn dùng prepare/bindValue để tránh SQL injection.
- * Khi đọc 1 dòng từ DB: đổ vào ProductData rồi gọi ProductFactory::create().
- */
+// Phụ trách: Vũ Bình Nguyên
 class ProductRepository {
 public:
     // Thêm mới, trả về id vừa tạo (hoặc -1 nếu lỗi)

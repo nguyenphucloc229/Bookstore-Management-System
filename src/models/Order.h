@@ -3,10 +3,6 @@
 #include <QDateTime>
 #include <QVector>
 
-/*
- * OrderItem — 1 dòng trong đơn hàng.
- * Lưu "snapshot" tên + giá tại thời điểm bán (giá sản phẩm có thể đổi sau này).
- */
 struct OrderItem {
     int productId = 0;
     QString productName;
@@ -16,10 +12,7 @@ struct OrderItem {
     double lineTotal() const { return unitPrice * quantity; }
 };
 
-/*
- * Order — đơn hàng, chứa nhiều OrderItem (quan hệ Composition).
- * Phụ trách: Võ Viết Tân.
- */
+// Phụ trách: Võ Viết Tân
 class Order {
 public:
     Order() = default;

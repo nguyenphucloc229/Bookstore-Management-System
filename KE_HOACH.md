@@ -179,7 +179,9 @@ src/
 └── ui/            Các màn hình Qt Widgets
 ```
 
-Luồng gọi: `ui → services → repositories → db`.
+Luồng gọi: UI gọi service hoặc repository, **không viết SQL trực tiếp**. Phần lớn việc đọc/ghi
+dữ liệu được đóng gói trong repository; riêng `ReportService` truy vấn `DatabaseManager` trực
+tiếp để tổng hợp số liệu thống kê bằng SQL.
 
 ### 3.2. Sơ đồ lớp (UML)
 

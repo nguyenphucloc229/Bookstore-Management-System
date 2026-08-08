@@ -6,10 +6,7 @@
 #include <QPushButton>
 #include "../repositories/ProductRepository.h"
 
-/*
- * ProductPage – Giao diện quản lý danh sách sản phẩm
- * Phụ trách: Vũ Bình Nguyên
- */
+// Phụ trách: Vũ Bình Nguyên
 class ProductPage : public QWidget {
     Q_OBJECT
 

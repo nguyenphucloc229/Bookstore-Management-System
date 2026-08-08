@@ -3,10 +3,7 @@
 #include <vector>
 #include "models/Customer.h"
 
-/*
- * CustomerRepository — đọc/ghi bảng `customers`.
- * Phụ trách: Nguyễn Trịnh Quốc Đạt
- */
+// Phụ trách: Nguyễn Trịnh Quốc Đạt
 class CustomerRepository {
 public:
     int add(const Customer& c);

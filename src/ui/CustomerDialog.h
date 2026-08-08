@@ -7,13 +7,7 @@ class QComboBox;
 class QSpinBox;
 class QDialogButtonBox;
 
-/*
- * CustomerDialog — hộp thoại Thêm / Sửa khách hàng.
- * Phụ trách: Nguyễn Trịnh Quốc Đạt
- *
- * Ô "Tier" bị khoá: hạng luôn được tính lại từ điểm (updateRankFromPoint)
- * để dữ liệu không mâu thuẫn, ví dụ 0 điểm nhưng hạng Gold.
- */
+// Phụ trách: Nguyễn Trịnh Quốc Đạt
 class CustomerDialog : public QDialog
 {
     Q_OBJECT

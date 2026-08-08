@@ -1,18 +1,7 @@
 #pragma once
 #include <QString>
 
-/*
- * Product — lớp cơ sở TRỪU TƯỢNG cho mọi sản phẩm trong cửa hàng.
- *
- * Thể hiện 4 tính chất OOP:
- *  - Abstraction   : class trừu tượng, có pure virtual function.
- *  - Encapsulation : thuộc tính private, truy cập qua getter/setter có validate.
- *  - Inheritance   : Book / Magazine / Stationery kế thừa từ Product.
- *  - Polymorphism  : getType()/getDetails() gọi qua con trỏ Product* sẽ chạy
- *                    đúng phiên bản của lớp con (runtime polymorphism).
- *
- * Phụ trách: Nguyễn Phúc Lộc
- */
+// Phụ trách: Nguyễn Phúc Lộc
 class Product {
 public:
     Product(int id, const QString& name, double price, int stockQty);

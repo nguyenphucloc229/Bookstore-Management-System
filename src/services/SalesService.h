@@ -2,17 +2,7 @@
 #include <QString>
 #include "models/Order.h"
 
-/*
- * SalesService — BUSINESS LOGIC BÁN HÀNG (vượt CRUD đơn giản, yêu cầu 3.5).
- *
- * Quy trình checkout:
- *  1. Kiểm tra tồn kho từng item (đủ hàng mới cho bán).
- *  2. Tính tổng tiền của đơn.
- *  3. Lưu Order + OrderItems (transaction).
- *  4. Trừ tồn kho từng sản phẩm.
- *
- * Phụ trách: Võ Viết Tân
- */
+// Phụ trách: Võ Viết Tân
 class SalesService {
 public:
     struct CheckoutResult {

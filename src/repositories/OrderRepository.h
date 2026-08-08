@@ -3,10 +3,7 @@
 #include <vector>
 #include "models/Order.h"
 
-/*
- * OrderRepository — đọc/ghi bảng `orders` + `order_items`.
- * Phụ trách: Võ Viết Tân
- */
+// Phụ trách: Võ Viết Tân
 class OrderRepository {
 public:
     // Lưu đơn + toàn bộ order_items trong 1 TRANSACTION

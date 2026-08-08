@@ -3,13 +3,7 @@
 #include <QDate>
 #include <QVector>
 
-/*
- * ReportService — thống kê / báo cáo cho trang Statistics.
- * Phụ trách: Quách Hiền Lương
- *
- * Số liệu được tổng hợp trực tiếp bằng SQL (SUM/GROUP BY) trên hai bảng
- * `orders` và `order_items` thay vì đọc hết dữ liệu lên rồi tính trong C++.
- */
+// Phụ trách: Quách Hiền Lương
 class ReportService {
 public:
     struct RevenuePoint {

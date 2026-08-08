@@ -3,13 +3,7 @@
 
 class QApplication;
 
-/*
- * AppStyle — bảng màu và style dùng chung cho toàn bộ giao diện.
- * Phụ trách: Nguyễn Phúc Lộc
- *
- * Gọi một lần trong main(). Các module không tự đặt màu/font riêng
- * để giao diện đồng nhất giữa bốn màn hình.
- */
+// Phụ trách: Nguyễn Phúc Lộc
 class AppStyle
 {
 public:

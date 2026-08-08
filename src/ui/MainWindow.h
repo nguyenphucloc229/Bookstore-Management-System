@@ -8,11 +8,7 @@ class ProductPage;
 class CustomerPage;
 class StatisticsPage;
 
-/*
- * MainWindow — khung chính: sidebar điều hướng bên trái + vùng nội dung bên phải.
- * Mỗi module là 1 page trong QStackedWidget (yêu cầu "clear navigation" của đề).
- * Phụ trách: Nguyễn Phúc Lộc
- */
+// Phụ trách: Nguyễn Phúc Lộc
 class MainWindow : public QMainWindow {
     Q_OBJECT
 

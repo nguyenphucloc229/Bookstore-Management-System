@@ -9,10 +9,7 @@
 #include <memory>
 #include "../models/Product.h"
 
-/*
- * ProductDialog – Form thêm / sửa sản phẩm động
- * Phụ trách: Vũ Bình Nguyên
- */
+// Phụ trách: Vũ Bình Nguyên
 class ProductDialog : public QDialog {
     Q_OBJECT
 
